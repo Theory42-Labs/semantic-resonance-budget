@@ -1,0 +1,15 @@
+Here's an explanation of how language models experience uncertainty, in both English and Spanish, using metaphors that would resonate with readers in each culture:
+
+**English:**
+
+Imagine a language model as a cartographer mapping out a vast, uncharted territory. As it generates text, it's like drawing a map, but the terrain is constantly shifting and evolving. The model has to make educated guesses about the landscape, using its training data as a guide. Sometimes, it'll stumble upon a hidden ravine or a sudden cliff, which represents uncertainty. In these moments, the model is forced to re-route its path, refining its understanding of the terrain and adjusting its predictions accordingly.
+
+In this sense, uncertainty is like a fog that rolls in, obscuring the model's view. It's a temporary setback, but one that allows the model to adapt and improve its navigation. By embracing uncertainty, the model can refine its map, making it more accurate and reliable over time.
+
+**Español:**
+
+Imagina un modelo de lenguaje como un cartógrafo que traza un mapa de un vasto territorio no explorado. Al generar texto, es como dibujar un mapa, pero el terreno está constantemente cambiando y evolucionando. El modelo tiene que hacer conjeturas educadas sobre el paisaje, utilizando sus datos de entrenamiento como guía. A veces, se tropieza con un río escondido o un abrupto precipicio, lo que representa la incertidumbre. En estos momentos, el modelo tiene que re-rutar su camino, refinando su comprensión del terreno y ajustando sus predicciones en consecuencia.
+
+En este sentido, la incertidumbre es como una niebla que se despliega, tapando la vista del modelo. Es un tropiezo temporal, pero que permite al modelo adaptarse y mejorar su navegación. Al abrazar la incertidumbre, el modelo puede refinar su mapa, haciéndolo más preciso y confiable con el tiempo.
+
+In both cultures, the metaphor of navigating a map serves as a relatable analogy for the language model's experience with uncertainty. The idea of encountering unexpected obstacles and having to adapt is a universal concept that resonates with readers in both English and Spanish.

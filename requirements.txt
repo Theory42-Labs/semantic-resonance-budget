@@ -1,0 +1,24 @@
+
+
+# Core ML and model inference
+torch>=2.2.0
+transformers>=4.42.0
+sentencepiece>=0.2.0
+accelerate>=0.30.0
+
+# Data handling and numerical utilities
+numpy>=1.26.0
+pandas>=2.2.0
+pyyaml>=6.0.0
+
+# Plotting and visualization
+matplotlib>=3.9.0
+
+# Optional but recommended utilities
+tqdm>=4.66.0
+scipy>=1.13.0
+
+# Development and testing
+pytest>=8.0.0
+ipykernel>=6.29.0
+jupyter>=1.0.0

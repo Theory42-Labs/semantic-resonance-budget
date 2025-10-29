@@ -1,0 +1,12 @@
+model_id: "meta-llama/Meta-Llama-3-8B-Instruct"
+max_new_tokens: 512
+temperature_base: 0.8
+top_p_base: 0.95
+entropy_top_k: 5
+resonance_alpha: 1.0
+completion_eps: 0.01      # |ΔR_t| window threshold
+completion_window: 5
+min_tokens: 64
+max_tokens: 2048
+reflect_on_drop: true
+reflect_drop_threshold: 0.10   # if R_t falls by ≥ this, trigger short reflection

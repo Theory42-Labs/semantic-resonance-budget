@@ -1,0 +1,7 @@
+{
+  "runs": 5,
+  "avg_entropy_mean": 0.40672703145270334,
+  "avg_coherence_mean": 0.42586511718880027,
+  "avg_R_mean": 0.31614170790593465,
+  "avg_R_collapse_steps": 549.6
+}

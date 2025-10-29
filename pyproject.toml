@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantic-resonance-budget"
+version = "1.0.0"
+description = "SRB: Adaptive inference through semantic resonance — entropy + semantic coherence for adaptive reasoning."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Theory42 Labs", email = "theory42labs@gmail.com" }]
+license = { file = "LICENSE-ACADEMIC.md" }
+keywords = ["LLM", "entropy", "semantic coherence", "reasoning", "adaptive inference", "SRB"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "torch>=2.2.0",
+  "transformers>=4.42.0",
+  "sentencepiece>=0.2.0",
+  "accelerate>=0.30.0",
+  "numpy>=1.26.0",
+  "pandas>=2.2.0",
+  "pyyaml>=6.0.0",
+  "matplotlib>=3.9.0",
+  "tqdm>=4.66.0",
+  "scipy>=1.13.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Theory42-Labs/semantic-resonance-budget"
+Issues = "https://github.com/Theory42-Labs/semantic-resonance-budget/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["srb*"]
+exclude = ["reports*", "examples*", "tests*", "experiments*"]
