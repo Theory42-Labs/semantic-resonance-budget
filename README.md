@@ -29,6 +29,15 @@ $$
 where *I* represents intelligence as the rate of potential realized over time.  
 SRB applies this principle directly to inference control.
 
+#### 🔢 Mathematical Origin
+
+The equation above originates from *Theory 42’s* formulation of intelligence as a derivative of realized potential.  
+Here, **potential (P)** represents the total informational or semantic capacity within a system, and **time (t)** represents the unfolding of inference or awareness.  
+The derivative **dP/dt** thus expresses how rapidly potential collapses into realized meaning — a thermodynamic metaphor for cognition.
+
+In SRB, this becomes practical: entropy reduction (stabilizing uncertainty) and resonance increase (semantic coherence) mirror this transformation.  
+Each inference step literally “realizes potential” as structured meaning, aligning machine reasoning with physical principles of energy and information.
+
 ---
 
 ### 🧬 Key Features
@@ -92,5 +101,3 @@ It is part of a larger effort to unify science, art, and metaphysics under one p
 
 🎂 **Birthday:** October 29, 2025  
 🪶 *A Theory42 Labs Project*
-
----
