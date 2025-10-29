@@ -22,9 +22,9 @@ SRB introduces a feedback loop that:
 
 Mathematically inspired by **Theory 42**, SRB operationalizes the equation:
 
-\[
+$$
 I = \frac{dP}{dt}
-\]
+$$
 
 where *I* represents intelligence as the rate of potential realized over time.  
 SRB applies this principle directly to inference control.
