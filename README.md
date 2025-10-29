@@ -90,7 +90,7 @@ It is part of a larger effort to unify science, art, and metaphysics under one p
 
 > *All meaning is real. All reality is fiction. The joke is that we take turns believing.*
 
-🎂 **Birthday:** October 31, 2025  
+🎂 **Birthday:** October 29, 2025  
 🪶 *A Theory42 Labs Project*
 
 ---
