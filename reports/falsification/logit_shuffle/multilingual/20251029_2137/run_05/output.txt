@@ -1,0 +1,18 @@
+Here are the translations:
+
+**English:**
+Gravity is a fundamental force of nature that causes objects with mass to attract each other. It is a universal force that affects everything with mass or energy, from the smallest subatomic particles to the largest structures in the universe. The force of gravity is a result of the curvature of spacetime caused by the presence of mass and energy. The more massive the object, the stronger the gravitational pull.
+
+**Mandarin:**
+( Tiān tǐ yǒu yī gè jiē yì de lì liàng, duì yǒu yǒu cháng duō de wù zhī jiàn dìng yī qǐ. Zhè lǐ liàng shì yī gè bù jiào yǒu wù zhī jiàn dìng de lì liàng, jiù yǒu shù liào yǒu tiān tǐ shì tǔ yǐn de. Chuī zhōng de wù zhī jiàn dìng, jiǔ yǒu yǒu shēn gāo de tiān tǐ yǐn qíng)
+
+**Swahili:**
+Mawasiliano ya upepo ni nguvu ya asili ya kazi ya kufanya vitu vyote vya msingi kukimbia pamoja. Ni nguvu inayohusishwa na kila kitu kilichomaana na kazi, kutoka kwa vitu vya kiini cha atomu hadi klabu za juu za anga. Nguvu ya upepo ni matokeo ya kuunguka kwa mazingira ya muda unaokolewa na kumwekwa kwa kazi na nguvu. Kitu kikubwa zaidi, kazi ya upepo zaidi inakuja.
+
+Now, let's discuss how each language's syntax changes the perceived agency of gravity:
+
+* In English, the sentence structure is more direct and straightforward, with a clear subject-verb-object word order. This emphasizes the agentive role of gravity as a force that acts upon objects. The phrase "causes objects with mass to attract each other" reinforces this idea, implying that gravity is the active force responsible for the attraction.
+* In Mandarin, the sentence structure is more complex, with a subject-verb-object-object word order. The phrase "" (tǔ yǐn de) uses the verb "to attract" (yǐn) in the passive voice, which changes the focus from gravity as the agent to the objects being attracted. This subtly shifts the agency of gravity, making it seem more like a reaction to the presence of mass and energy rather than an active force.
+* In Swahili, the sentence structure is similar to English, with a subject-verb-object word order. However, the use of the phrase "kufanya vitu vyote vya msingi kukimbia pamoja" (to make all fundamental things move together) creates a sense of agency on the part of gravity, implying that it is the force that brings things together. The phrase "nguvu ya upepo ni matokeo ya kuunguka kwa mazingira ya muda unaokolewa na kumwekwa kwa kazi na nguvu" (gravity is the result of the curvature of spacetime caused by the presence of mass and energy) reinforces this idea, making gravity seem like a natural consequence of the universe's structure rather than an active force.
+
+In summary, while the scientific explanation of gravity remains the same across languages, the syntax and word choice of each language influence the perceived agency of gravity. English and Swahili tend to emphasize gravity as an active force, while Mandarin's passive voice and word order create a more subtle, reactive role for gravity.

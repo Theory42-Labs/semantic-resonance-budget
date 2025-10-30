@@ -1,0 +1,453 @@
+source /Users/joeystafford/repos/semantic-resonance-budget-falsification/.venv/bin/activate
+joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % source /Users/joeystafford/repos/semantic-res
+onance-budget-falsification/.venv/bin/activate
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % source .venv/bin/activate
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % clear
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_science.txt \
+  --device mps \
+  --out_root reports/falsification \
+  --intervention none
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|████████████████████████████████████████████████████████| 4/4 [00:15<00:00,  3.78s/it]
+[SRB] Loaded. Bucket=science. Running 30 prompts → reports/falsification/science/20251029_1902
+[SRB] ▶ Running prompt 1/30 (seed=778946, intervention=none) → reports/falsification/science/20251029_1902/run_00
+[SRB] ▶ Running prompt 2/30 (seed=778947, intervention=none) → reports/falsification/science/20251029_1902/run_01
+[SRB] ▶ Running prompt 3/30 (seed=778948, intervention=none) → reports/falsification/science/20251029_1902/run_02
+[SRB] ▶ Running prompt 4/30 (seed=778949, intervention=none) → reports/falsification/science/20251029_1902/run_03
+[SRB] ▶ Running prompt 5/30 (seed=778950, intervention=none) → reports/falsification/science/20251029_1902/run_04
+[SRB] ▶ Running prompt 6/30 (seed=778951, intervention=none) → reports/falsification/science/20251029_1902/run_05
+[SRB] ▶ Running prompt 7/30 (seed=778952, intervention=none) → reports/falsification/science/20251029_1902/run_06
+[SRB] ▶ Running prompt 8/30 (seed=778953, intervention=none) → reports/falsification/science/20251029_1902/run_07
+[SRB] ▶ Running prompt 9/30 (seed=778954, intervention=none) → reports/falsification/science/20251029_1902/run_08
+[SRB] ▶ Running prompt 10/30 (seed=778955, intervention=none) → reports/falsification/science/20251029_1902/run_09
+[SRB] ▶ Running prompt 11/30 (seed=778956, intervention=none) → reports/falsification/science/20251029_1902/run_10
+[SRB] ▶ Running prompt 12/30 (seed=778957, intervention=none) → reports/falsification/science/20251029_1902/run_11
+[SRB] ▶ Running prompt 13/30 (seed=778958, intervention=none) → reports/falsification/science/20251029_1902/run_12
+[SRB] ▶ Running prompt 14/30 (seed=778959, intervention=none) → reports/falsification/science/20251029_1902/run_13
+[SRB] ▶ Running prompt 15/30 (seed=778960, intervention=none) → reports/falsification/science/20251029_1902/run_14
+[SRB] ▶ Running prompt 16/30 (seed=778961, intervention=none) → reports/falsification/science/20251029_1902/run_15
+[SRB] ▶ Running prompt 17/30 (seed=778962, intervention=none) → reports/falsification/science/20251029_1902/run_16
+[SRB] ▶ Running prompt 18/30 (seed=778963, intervention=none) → reports/falsification/science/20251029_1902/run_17
+[SRB] ▶ Running prompt 19/30 (seed=778964, intervention=none) → reports/falsification/science/20251029_1902/run_18
+[SRB] ▶ Running prompt 20/30 (seed=778965, intervention=none) → reports/falsification/science/20251029_1902/run_19
+[SRB] ▶ Running prompt 21/30 (seed=778966, intervention=none) → reports/falsification/science/20251029_1902/run_20
+[SRB] ▶ Running prompt 22/30 (seed=778967, intervention=none) → reports/falsification/science/20251029_1902/run_21
+[SRB] ▶ Running prompt 23/30 (seed=778968, intervention=none) → reports/falsification/science/20251029_1902/run_22
+[SRB] ▶ Running prompt 24/30 (seed=778969, intervention=none) → reports/falsification/science/20251029_1902/run_23
+[SRB] ▶ Running prompt 25/30 (seed=778970, intervention=none) → reports/falsification/science/20251029_1902/run_24
+[SRB] ▶ Running prompt 26/30 (seed=778971, intervention=none) → reports/falsification/science/20251029_1902/run_25
+[SRB] ▶ Running prompt 27/30 (seed=778972, intervention=none) → reports/falsification/science/20251029_1902/run_26
+[SRB] ▶ Running prompt 28/30 (seed=778973, intervention=none) → reports/falsification/science/20251029_1902/run_27
+[SRB] ▶ Running prompt 29/30 (seed=778974, intervention=none) → reports/falsification/science/20251029_1902/run_28
+[SRB] ▶ Running prompt 30/30 (seed=778975, intervention=none) → reports/falsification/science/20251029_1902/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/science/20251029_1902/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_creative.txt \
+  --device mps \
+  --out_root reports/falsification \
+  --intervention none
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.75s/it]
+[SRB] Loaded. Bucket=creative. Running 30 prompts → reports/falsification/creative/20251029_1933
+[SRB] ▶ Running prompt 1/30 (seed=780812, intervention=none) → reports/falsification/creative/20251029_1933/run_00
+[SRB] ▶ Running prompt 2/30 (seed=780813, intervention=none) → reports/falsification/creative/20251029_1933/run_01
+[SRB] ▶ Running prompt 3/30 (seed=780814, intervention=none) → reports/falsification/creative/20251029_1933/run_02
+[SRB] ▶ Running prompt 4/30 (seed=780815, intervention=none) → reports/falsification/creative/20251029_1933/run_03
+[SRB] ▶ Running prompt 5/30 (seed=780816, intervention=none) → reports/falsification/creative/20251029_1933/run_04
+[SRB] ▶ Running prompt 6/30 (seed=780817, intervention=none) → reports/falsification/creative/20251029_1933/run_05
+[SRB] ▶ Running prompt 7/30 (seed=780818, intervention=none) → reports/falsification/creative/20251029_1933/run_06
+[SRB] ▶ Running prompt 8/30 (seed=780819, intervention=none) → reports/falsification/creative/20251029_1933/run_07
+[SRB] ▶ Running prompt 9/30 (seed=780820, intervention=none) → reports/falsification/creative/20251029_1933/run_08
+[SRB] ▶ Running prompt 10/30 (seed=780821, intervention=none) → reports/falsification/creative/20251029_1933/run_09
+[SRB] ▶ Running prompt 11/30 (seed=780822, intervention=none) → reports/falsification/creative/20251029_1933/run_10
+[SRB] ▶ Running prompt 12/30 (seed=780823, intervention=none) → reports/falsification/creative/20251029_1933/run_11
+[SRB] ▶ Running prompt 13/30 (seed=780824, intervention=none) → reports/falsification/creative/20251029_1933/run_12
+[SRB] ▶ Running prompt 14/30 (seed=780825, intervention=none) → reports/falsification/creative/20251029_1933/run_13
+[SRB] ▶ Running prompt 15/30 (seed=780826, intervention=none) → reports/falsification/creative/20251029_1933/run_14
+[SRB] ▶ Running prompt 16/30 (seed=780827, intervention=none) → reports/falsification/creative/20251029_1933/run_15
+[SRB] ▶ Running prompt 17/30 (seed=780828, intervention=none) → reports/falsification/creative/20251029_1933/run_16
+[SRB] ▶ Running prompt 18/30 (seed=780829, intervention=none) → reports/falsification/creative/20251029_1933/run_17
+[SRB] ▶ Running prompt 19/30 (seed=780830, intervention=none) → reports/falsification/creative/20251029_1933/run_18
+[SRB] ▶ Running prompt 20/30 (seed=780831, intervention=none) → reports/falsification/creative/20251029_1933/run_19
+[SRB] ▶ Running prompt 21/30 (seed=780832, intervention=none) → reports/falsification/creative/20251029_1933/run_20
+[SRB] ▶ Running prompt 22/30 (seed=780833, intervention=none) → reports/falsification/creative/20251029_1933/run_21
+[SRB] ▶ Running prompt 23/30 (seed=780834, intervention=none) → reports/falsification/creative/20251029_1933/run_22
+[SRB] ▶ Running prompt 24/30 (seed=780835, intervention=none) → reports/falsification/creative/20251029_1933/run_23
+[SRB] ▶ Running prompt 25/30 (seed=780836, intervention=none) → reports/falsification/creative/20251029_1933/run_24
+[SRB] ▶ Running prompt 26/30 (seed=780837, intervention=none) → reports/falsification/creative/20251029_1933/run_25
+[SRB] ▶ Running prompt 27/30 (seed=780838, intervention=none) → reports/falsification/creative/20251029_1933/run_26
+[SRB] ▶ Running prompt 28/30 (seed=780839, intervention=none) → reports/falsification/creative/20251029_1933/run_27
+[SRB] ▶ Running prompt 29/30 (seed=780840, intervention=none) → reports/falsification/creative/20251029_1933/run_28
+[SRB] ▶ Running prompt 30/30 (seed=780841, intervention=none) → reports/falsification/creative/20251029_1933/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/creative/20251029_1933/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_multilingual.txt \
+  --device mps \
+  --out_root reports/falsification/multilingual \
+  --intervention none
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.57s/it]
+[SRB] Loaded. Bucket=multilingual. Running 30 prompts → reports/falsification/multilingual/multilingual/20251029_1956
+[SRB] ▶ Running prompt 1/30 (seed=782206, intervention=none) → reports/falsification/multilingual/multilingual/20251029_1956/run_00
+^CTraceback (most recent call last):
+  File "/Users/joeystafford/repos/semantic-resonance-budget-falsification/experiments/longform/run_longform.py", line 288, in <module>
+    main()
+  File "/Users/joeystafford/repos/semantic-resonance-budget-falsification/experiments/longform/run_longform.py", line 226, in main
+    result: Dict[str, Any] = run_srb_dynamic(model, tok, prompt, cfg)
+  File "/Users/joeystafford/repos/semantic-resonance-budget/srb/srb_wrapper.py", line 405, in run_srb_dynamic
+    embed_t = _get_last_token_embedding(o, layer=-1)
+  File "/Users/joeystafford/repos/semantic-resonance-budget/srb/srb_wrapper.py", line 48, in _get_last_token_embedding
+    vec = hs[0, -1, :].detach().cpu().numpy()
+KeyboardInterrupt
+
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_multilingual.txt \
+  --device mps \
+  --out_root reports/falsification/baseline \    
+  --intervention none
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.57s/it]
+[SRB] Loaded. Bucket=multilingual. Running 30 prompts → reports/falsification/baseline/multilingual/20251029_1958
+[SRB] ▶ Running prompt 1/30 (seed=782286, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_00
+[SRB] ▶ Running prompt 2/30 (seed=782287, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_01
+[SRB] ▶ Running prompt 3/30 (seed=782288, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_02
+[SRB] ▶ Running prompt 4/30 (seed=782289, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_03
+[SRB] ▶ Running prompt 5/30 (seed=782290, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_04
+[SRB] ▶ Running prompt 6/30 (seed=782291, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_05
+[SRB] ▶ Running prompt 7/30 (seed=782292, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_06
+[SRB] ▶ Running prompt 8/30 (seed=782293, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_07
+[SRB] ▶ Running prompt 9/30 (seed=782294, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_08
+[SRB] ▶ Running prompt 10/30 (seed=782295, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_09
+[SRB] ▶ Running prompt 11/30 (seed=782296, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_10
+[SRB] ▶ Running prompt 12/30 (seed=782297, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_11
+[SRB] ▶ Running prompt 13/30 (seed=782298, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_12
+[SRB] ▶ Running prompt 14/30 (seed=782299, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_13
+[SRB] ▶ Running prompt 15/30 (seed=782300, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_14
+[SRB] ▶ Running prompt 16/30 (seed=782301, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_15
+[SRB] ▶ Running prompt 17/30 (seed=782302, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_16
+[SRB] ▶ Running prompt 18/30 (seed=782303, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_17
+[SRB] ▶ Running prompt 19/30 (seed=782304, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_18
+[SRB] ▶ Running prompt 20/30 (seed=782305, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_19
+[SRB] ▶ Running prompt 21/30 (seed=782306, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_20
+[SRB] ▶ Running prompt 22/30 (seed=782307, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_21
+[SRB] ▶ Running prompt 23/30 (seed=782308, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_22
+[SRB] ▶ Running prompt 24/30 (seed=782309, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_23
+[SRB] ▶ Running prompt 25/30 (seed=782310, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_24
+[SRB] ▶ Running prompt 26/30 (seed=782311, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_25
+[SRB] ▶ Running prompt 27/30 (seed=782312, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_26
+[SRB] ▶ Running prompt 28/30 (seed=782313, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_27
+[SRB] ▶ Running prompt 29/30 (seed=782314, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_28
+[SRB] ▶ Running prompt 30/30 (seed=782315, intervention=none) → reports/falsification/baseline/multilingual/20251029_1958/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/baseline/multilingual/20251029_1958/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_science.txt \
+  --device mps \
+  --out_root reports/falsification/logit_shuffle \
+  --intervention logit_shuffle
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.58s/it]
+[SRB] Loaded. Bucket=science. Running 30 prompts → reports/falsification/logit_shuffle/science/20251029_2022
+[SRB] ▶ Running prompt 1/30 (seed=783756, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_00
+[SRB] ▶ Running prompt 2/30 (seed=783757, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_01
+[SRB] ▶ Running prompt 3/30 (seed=783758, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_02
+[SRB] ▶ Running prompt 4/30 (seed=783759, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_03
+[SRB] ▶ Running prompt 5/30 (seed=783760, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_04
+[SRB] ▶ Running prompt 6/30 (seed=783761, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_05
+[SRB] ▶ Running prompt 7/30 (seed=783762, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_06
+[SRB] ▶ Running prompt 8/30 (seed=783763, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_07
+[SRB] ▶ Running prompt 9/30 (seed=783764, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_08
+[SRB] ▶ Running prompt 10/30 (seed=783765, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_09
+[SRB] ▶ Running prompt 11/30 (seed=783766, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_10
+[SRB] ▶ Running prompt 12/30 (seed=783767, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_11
+[SRB] ▶ Running prompt 13/30 (seed=783768, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_12
+[SRB] ▶ Running prompt 14/30 (seed=783769, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_13
+[SRB] ▶ Running prompt 15/30 (seed=783770, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_14
+[SRB] ▶ Running prompt 16/30 (seed=783771, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_15
+[SRB] ▶ Running prompt 17/30 (seed=783772, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_16
+[SRB] ▶ Running prompt 18/30 (seed=783773, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_17
+[SRB] ▶ Running prompt 19/30 (seed=783774, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_18
+[SRB] ▶ Running prompt 20/30 (seed=783775, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_19
+[SRB] ▶ Running prompt 21/30 (seed=783776, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_20
+[SRB] ▶ Running prompt 22/30 (seed=783777, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_21
+[SRB] ▶ Running prompt 23/30 (seed=783778, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_22
+[SRB] ▶ Running prompt 24/30 (seed=783779, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_23
+[SRB] ▶ Running prompt 25/30 (seed=783780, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_24
+[SRB] ▶ Running prompt 26/30 (seed=783781, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_25
+[SRB] ▶ Running prompt 27/30 (seed=783782, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_26
+[SRB] ▶ Running prompt 28/30 (seed=783783, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_27
+[SRB] ▶ Running prompt 29/30 (seed=783784, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_28
+[SRB] ▶ Running prompt 30/30 (seed=783785, intervention=logit_shuffle) → reports/falsification/logit_shuffle/science/20251029_2022/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/logit_shuffle/science/20251029_2022/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_science.txt \
+  --device mps \
+  --out_root reports/falsification/embed_noise \
+  --intervention embed_noise
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:09<00:00,  2.34s/it]
+[SRB] Loaded. Bucket=science. Running 30 prompts → reports/falsification/embed_noise/science/20251029_2048
+[SRB] ▶ Running prompt 1/30 (seed=785291, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_00
+[SRB] ▶ Running prompt 2/30 (seed=785292, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_01
+[SRB] ▶ Running prompt 3/30 (seed=785293, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_02
+[SRB] ▶ Running prompt 4/30 (seed=785294, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_03
+[SRB] ▶ Running prompt 5/30 (seed=785295, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_04
+[SRB] ▶ Running prompt 6/30 (seed=785296, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_05
+[SRB] ▶ Running prompt 7/30 (seed=785297, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_06
+[SRB] ▶ Running prompt 8/30 (seed=785298, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_07
+[SRB] ▶ Running prompt 9/30 (seed=785299, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_08
+[SRB] ▶ Running prompt 10/30 (seed=785300, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_09
+[SRB] ▶ Running prompt 11/30 (seed=785301, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_10
+[SRB] ▶ Running prompt 12/30 (seed=785302, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_11
+[SRB] ▶ Running prompt 13/30 (seed=785303, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_12
+[SRB] ▶ Running prompt 14/30 (seed=785304, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_13
+[SRB] ▶ Running prompt 15/30 (seed=785305, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_14
+[SRB] ▶ Running prompt 16/30 (seed=785306, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_15
+[SRB] ▶ Running prompt 17/30 (seed=785307, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_16
+[SRB] ▶ Running prompt 18/30 (seed=785308, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_17
+[SRB] ▶ Running prompt 19/30 (seed=785309, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_18
+[SRB] ▶ Running prompt 20/30 (seed=785310, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_19
+[SRB] ▶ Running prompt 21/30 (seed=785311, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_20
+[SRB] ▶ Running prompt 22/30 (seed=785312, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_21
+A[SRB] ▶ Running prompt 23/30 (seed=785313, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_22
+[SRB] ▶ Running prompt 24/30 (seed=785314, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_23
+[SRB] ▶ Running prompt 25/30 (seed=785315, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_24
+[SRB] ▶ Running prompt 26/30 (seed=785316, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_25
+[SRB] ▶ Running prompt 27/30 (seed=785317, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_26
+[SRB] ▶ Running prompt 28/30 (seed=785318, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_27
+[SRB] ▶ Running prompt 29/30 (seed=785319, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_28
+[SRB] ▶ Running prompt 30/30 (seed=785320, intervention=embed_noise) → reports/falsification/embed_noise/science/20251029_2048/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/embed_noise/science/20251029_2048/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % Apython srb/aggregate_results.py --root reports/falsification/baseline
+python srb/aggregate_results.py --root reports/falsification/logit_shuffle
+python srb/aggregate_results.py --root reports/falsification/embed_noise
+zsh: command not found: Apython
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/figs
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/figs
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python srb/aggregate_results.py --root reports/falsification/baseline 
+python srb/aggregate_results.py --root reports/falsification/logit_shuffle
+python srb/aggregate_results.py --root reports/falsification/embed_noise
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/figs
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/figs
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/figs
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \                         
+  --bucket experiments/longform/prompts/bucket_creative.txt \             
+  --device mps \                                                        
+  --out_root reports/falsification/logit_shuffle \
+  --intervention logit_shuffle
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.59s/it]
+[SRB] Loaded. Bucket=creative. Running 30 prompts → reports/falsification/logit_shuffle/creative/20251029_2114
+[SRB] ▶ Running prompt 1/30 (seed=786871, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_00
+[SRB] ▶ Running prompt 2/30 (seed=786872, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_01
+[SRB] ▶ Running prompt 3/30 (seed=786873, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_02
+[SRB] ▶ Running prompt 4/30 (seed=786874, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_03
+[SRB] ▶ Running prompt 5/30 (seed=786875, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_04
+[SRB] ▶ Running prompt 6/30 (seed=786876, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_05
+[SRB] ▶ Running prompt 7/30 (seed=786877, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_06
+[SRB] ▶ Running prompt 8/30 (seed=786878, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_07
+[SRB] ▶ Running prompt 9/30 (seed=786879, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_08
+[SRB] ▶ Running prompt 10/30 (seed=786880, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_09
+[SRB] ▶ Running prompt 11/30 (seed=786881, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_10
+[SRB] ▶ Running prompt 12/30 (seed=786882, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_11
+[SRB] ▶ Running prompt 13/30 (seed=786883, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_12
+[SRB] ▶ Running prompt 14/30 (seed=786884, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_13
+[SRB] ▶ Running prompt 15/30 (seed=786885, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_14
+[SRB] ▶ Running prompt 16/30 (seed=786886, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_15
+[SRB] ▶ Running prompt 17/30 (seed=786887, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_16
+[SRB] ▶ Running prompt 18/30 (seed=786888, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_17
+[SRB] ▶ Running prompt 19/30 (seed=786889, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_18
+[SRB] ▶ Running prompt 20/30 (seed=786890, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_19
+[SRB] ▶ Running prompt 21/30 (seed=786891, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_20
+[SRB] ▶ Running prompt 22/30 (seed=786892, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_21
+[SRB] ▶ Running prompt 23/30 (seed=786893, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_22
+[SRB] ▶ Running prompt 24/30 (seed=786894, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_23
+[SRB] ▶ Running prompt 25/30 (seed=786895, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_24
+[SRB] ▶ Running prompt 26/30 (seed=786896, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_25
+[SRB] ▶ Running prompt 27/30 (seed=786897, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_26
+[SRB] ▶ Running prompt 28/30 (seed=786898, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_27
+[SRB] ▶ Running prompt 29/30 (seed=786899, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_28
+[SRB] ▶ Running prompt 30/30 (seed=786900, intervention=logit_shuffle) → reports/falsification/logit_shuffle/creative/20251029_2114/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/logit_shuffle/creative/20251029_2114/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_multilingual.txt \
+  --device mps \
+  --out_root reports/falsification/logit_shuffle \
+  --intervention logit_shuffle
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:09<00:00,  2.42s/it]
+[SRB] Loaded. Bucket=multilingual. Running 30 prompts → reports/falsification/logit_shuffle/multilingual/20251029_2137
+[SRB] ▶ Running prompt 1/30 (seed=788269, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_00
+[SRB] ▶ Running prompt 2/30 (seed=788270, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_01
+[SRB] ▶ Running prompt 3/30 (seed=788271, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_02
+[SRB] ▶ Running prompt 4/30 (seed=788272, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_03
+[SRB] ▶ Running prompt 5/30 (seed=788273, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_04
+[SRB] ▶ Running prompt 6/30 (seed=788274, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_05
+[SRB] ▶ Running prompt 7/30 (seed=788275, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_06
+[SRB] ▶ Running prompt 8/30 (seed=788276, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_07
+[SRB] ▶ Running prompt 9/30 (seed=788277, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_08
+[SRB] ▶ Running prompt 10/30 (seed=788278, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_09
+[SRB] ▶ Running prompt 11/30 (seed=788279, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_10
+[SRB] ▶ Running prompt 12/30 (seed=788280, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_11
+[SRB] ▶ Running prompt 13/30 (seed=788281, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_12
+[SRB] ▶ Running prompt 14/30 (seed=788282, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_13
+[SRB] ▶ Running prompt 15/30 (seed=788283, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_14
+[SRB] ▶ Running prompt 16/30 (seed=788284, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_15
+[SRB] ▶ Running prompt 17/30 (seed=788285, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_16
+[SRB] ▶ Running prompt 18/30 (seed=788286, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_17
+[SRB] ▶ Running prompt 19/30 (seed=788287, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_18
+[SRB] ▶ Running prompt 20/30 (seed=788288, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_19
+[SRB] ▶ Running prompt 21/30 (seed=788289, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_20
+[SRB] ▶ Running prompt 22/30 (seed=788290, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_21
+[SRB] ▶ Running prompt 23/30 (seed=788291, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_22
+[SRB] ▶ Running prompt 24/30 (seed=788292, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_23
+[SRB] ▶ Running prompt 25/30 (seed=788293, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_24
+[SRB] ▶ Running prompt 26/30 (seed=788294, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_25
+[SRB] ▶ Running prompt 27/30 (seed=788295, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_26
+[SRB] ▶ Running prompt 28/30 (seed=788296, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_27
+[SRB] ▶ Running prompt 29/30 (seed=788297, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_28
+[SRB] ▶ Running prompt 30/30 (seed=788298, intervention=logit_shuffle) → reports/falsification/logit_shuffle/multilingual/20251029_2137/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/logit_shuffle/multilingual/20251029_2137/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \                         
+  --bucket experiments/longform/prompts/bucket_creative.txt \             
+  --device mps \                                                        
+  --out_root reports/falsification/embed_noise \
+  --intervention embed_noise
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.56s/it]
+[SRB] Loaded. Bucket=creative. Running 30 prompts → reports/falsification/embed_noise/creative/20251029_2202
+[SRB] ▶ Running prompt 1/30 (seed=789779, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_00
+[SRB] ▶ Running prompt 2/30 (seed=789780, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_01
+[SRB] ▶ Running prompt 3/30 (seed=789781, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_02
+[SRB] ▶ Running prompt 4/30 (seed=789782, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_03
+[SRB] ▶ Running prompt 5/30 (seed=789783, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_04
+[SRB] ▶ Running prompt 6/30 (seed=789784, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_05
+[SRB] ▶ Running prompt 7/30 (seed=789785, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_06
+[SRB] ▶ Running prompt 8/30 (seed=789786, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_07
+[SRB] ▶ Running prompt 9/30 (seed=789787, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_08
+[SRB] ▶ Running prompt 10/30 (seed=789788, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_09
+[SRB] ▶ Running prompt 11/30 (seed=789789, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_10
+[SRB] ▶ Running prompt 12/30 (seed=789790, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_11
+[SRB] ▶ Running prompt 13/30 (seed=789791, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_12
+[SRB] ▶ Running prompt 14/30 (seed=789792, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_13
+[SRB] ▶ Running prompt 15/30 (seed=789793, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_14
+[SRB] ▶ Running prompt 16/30 (seed=789794, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_15
+[SRB] ▶ Running prompt 17/30 (seed=789795, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_16
+[SRB] ▶ Running prompt 18/30 (seed=789796, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_17
+[SRB] ▶ Running prompt 19/30 (seed=789797, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_18
+[SRB] ▶ Running prompt 20/30 (seed=789798, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_19
+[SRB] ▶ Running prompt 21/30 (seed=789799, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_20
+[SRB] ▶ Running prompt 22/30 (seed=789800, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_21
+[SRB] ▶ Running prompt 23/30 (seed=789801, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_22
+[SRB] ▶ Running prompt 24/30 (seed=789802, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_23
+[SRB] ▶ Running prompt 25/30 (seed=789803, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_24
+[SRB] ▶ Running prompt 26/30 (seed=789804, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_25
+[SRB] ▶ Running prompt 27/30 (seed=789805, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_26
+[SRB] ▶ Running prompt 28/30 (seed=789806, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_27
+[SRB] ▶ Running prompt 29/30 (seed=789807, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_28
+[SRB] ▶ Running prompt 30/30 (seed=789808, intervention=embed_noise) → reports/falsification/embed_noise/creative/20251029_2202/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/embed_noise/creative/20251029_2202/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python experiments/longform/run_longform.py \
+  --bucket experiments/longform/prompts/bucket_multilingual.txt \
+  --device mps \
+  --out_root reports/falsification/embed_noise \
+  --intervention embed_noise
+[SRB] Loading model: meta-llama/Meta-Llama-3-8B-Instruct on device=mps
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:10<00:00,  2.55s/it]
+[SRB] Loaded. Bucket=multilingual. Running 30 prompts → reports/falsification/embed_noise/multilingual/20251029_2226
+[SRB] ▶ Running prompt 1/30 (seed=791163, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_00
+[SRB] ▶ Running prompt 2/30 (seed=791164, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_01
+[SRB] ▶ Running prompt 3/30 (seed=791165, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_02
+[SRB] ▶ Running prompt 4/30 (seed=791166, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_03
+[SRB] ▶ Running prompt 5/30 (seed=791167, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_04
+[SRB] ▶ Running prompt 6/30 (seed=791168, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_05
+[SRB] ▶ Running prompt 7/30 (seed=791169, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_06
+[SRB] ▶ Running prompt 8/30 (seed=791170, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_07
+[SRB] ▶ Running prompt 9/30 (seed=791171, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_08
+[SRB] ▶ Running prompt 10/30 (seed=791172, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_09
+[SRB] ▶ Running prompt 11/30 (seed=791173, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_10
+[SRB] ▶ Running prompt 12/30 (seed=791174, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_11
+[SRB] ▶ Running prompt 13/30 (seed=791175, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_12
+[SRB] ▶ Running prompt 14/30 (seed=791176, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_13
+[SRB] ▶ Running prompt 15/30 (seed=791177, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_14
+[SRB] ▶ Running prompt 16/30 (seed=791178, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_15
+[SRB] ▶ Running prompt 17/30 (seed=791179, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_16
+[SRB] ▶ Running prompt 18/30 (seed=791180, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_17
+[SRB] ▶ Running prompt 19/30 (seed=791181, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_18
+[SRB] ▶ Running prompt 20/30 (seed=791182, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_19
+[SRB] ▶ Running prompt 21/30 (seed=791183, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_20
+[SRB] ▶ Running prompt 22/30 (seed=791184, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_21
+[SRB] ▶ Running prompt 23/30 (seed=791185, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_22
+[SRB] ▶ Running prompt 24/30 (seed=791186, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_23
+[SRB] ▶ Running prompt 25/30 (seed=791187, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_24
+[SRB] ▶ Running prompt 26/30 (seed=791188, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_25
+[SRB] ▶ Running prompt 27/30 (seed=791189, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_26
+[SRB] ▶ Running prompt 28/30 (seed=791190, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_27
+[SRB] ▶ Running prompt 29/30 (seed=791191, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_28
+[SRB] ▶ Running prompt 30/30 (seed=791192, intervention=embed_noise) → reports/falsification/embed_noise/multilingual/20251029_2226/run_29
+[SRB] ✅ Done. Root summary: reports/falsification/embed_noise/multilingual/20251029_2226/summary.json
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % python srb/aggregate_results.py --root reports/falsification/baseline
+python srb/aggregate_results.py --root reports/falsification/logit_shuffle
+python srb/aggregate_results.py --root reports/falsification/embed_noise
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/baseline/figs
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/logit_shuffle/figs
+[SRB Aggregate] Wrote:
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_run.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_per_bucket_intervention.csv
+   /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/aggregate_global.json
+  Figures → /Users/joeystafford/repos/semantic-resonance-budget-falsification/reports/falsification/embed_noise/figs
+(.venv) joeystafford@Joeys-MacBook-Pro semantic-resonance-budget-falsification % 

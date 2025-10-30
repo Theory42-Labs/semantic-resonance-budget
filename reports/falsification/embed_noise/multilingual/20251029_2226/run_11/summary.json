@@ -1,0 +1,16 @@
+{
+  "R_collapse_steps": 677,
+  "R_final": 0.3225728669796807,
+  "R_mean": 0.3025514590008627,
+  "R_std": 0.17136308067035014,
+  "R_var": 0.02936530541683293,
+  "_saved_at": "2025-10-30T02:35:24.689265Z",
+  "coherence_final": 0.329833984375,
+  "coherence_mean": 0.426729188183738,
+  "coherence_std": 0.15446042650257205,
+  "entropy_final": 0.035430908203125,
+  "entropy_mean": 0.45958453821818973,
+  "entropy_std": 0.49112625350060246,
+  "intervention": "embed_noise",
+  "seed": 791174
+}
