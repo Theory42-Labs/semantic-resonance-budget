@@ -46,6 +46,7 @@ import matplotlib.pyplot as plt
 # Config / detection
 # ---------------------------------
 BUCKET_TOKENS = ("science", "creative", "multilingual")
+INTERVENTION_DEFAULT = "none"
 
 
 def detect_bucket_from_path(path: str) -> str:
@@ -81,6 +82,11 @@ def read_trace_csv(path: str) -> pd.DataFrame:
     df = df.copy()
     df["step"] = df["step"].astype(int)
     df = df.sort_values("step").reset_index(drop=True)
+    # Normalize optional intervention column
+    if "intervention" in df.columns:
+        df["intervention"] = df["intervention"].astype(str).str.lower()
+    else:
+        df["intervention"] = INTERVENTION_DEFAULT
     # Ensure d_resonance
     if "d_resonance" not in df.columns:
         vals = df["resonance"].values
@@ -139,6 +145,13 @@ def compute_run_metrics(df: pd.DataFrame, path: str, root: str) -> Dict[str, obj
     R = df["resonance"].values
     dR = df["d_resonance"].values
 
+    # Per-run intervention (last non-null value or default)
+    if "intervention" in df.columns and len(df["intervention"]) > 0:
+        last_inv = df["intervention"].iloc[-1]
+        intervention = (str(last_inv).lower() if isinstance(last_inv, str) else INTERVENTION_DEFAULT) or INTERVENTION_DEFAULT
+    else:
+        intervention = INTERVENTION_DEFAULT
+
     # Basic stats
     metrics: Dict[str, object] = {
         "trace_path": path,
@@ -157,6 +170,7 @@ def compute_run_metrics(df: pd.DataFrame, path: str, root: str) -> Dict[str, obj
         "HR_corr": float(pd.Series(H).corr(pd.Series(R))) if len(H) > 1 else np.nan,
         "neg_dR_count": int(np.sum(dR < 0)),
         "abs_dR_mean": float(np.mean(np.abs(dR))) if len(dR) else np.nan,
+        "intervention": intervention,
     }
 
     # Lag (entropy -> resonance)
@@ -233,6 +247,26 @@ def make_bucket_bar_figures(df_bucket: pd.DataFrame, figs_dir: str) -> None:
         save_one("curvature_zero_rate", "rate", "Entropy Curvature Zero-Cross Rate by Bucket", "bucket_bar_curvature_rate.png")
 
 
+def make_bucket_intervention_bar(df_bi: pd.DataFrame, figs_dir: str, col: str, ylabel: str, title: str, fname: str) -> None:
+    # df_bi is indexed by [bucket, intervention]
+    buckets = sorted(df_bi.index.get_level_values(0).unique())
+    intervs = sorted(df_bi.index.get_level_values(1).unique())
+    x = np.arange(len(buckets))
+    width = 0.8 / max(1, len(intervs))
+    fig, ax = plt.subplots(figsize=(8.5, 4.6))
+    for j, inv in enumerate(intervs):
+        vals = [df_bi.loc[(b, inv)][col] if (b, inv) in df_bi.index else np.nan for b in buckets]
+        ax.bar(x + j*width - 0.4 + width/2, vals, width=width, label=inv)
+    ax.set_xticks(x)
+    ax.set_xticklabels(buckets)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.legend(title="intervention", fontsize=9)
+    plt.tight_layout()
+    plt.savefig(os.path.join(figs_dir, fname), dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
 # ---------------------------------
 # Main
 # ---------------------------------
@@ -269,20 +303,34 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     df_runs = pd.DataFrame(per_run_rows)
 
+    # Ensure expected columns exist
+    if "intervention" not in df_runs.columns:
+        df_runs["intervention"] = INTERVENTION_DEFAULT
+
     # Per-bucket aggregation: mean of run-level metrics
-    numeric_cols = [c for c in df_runs.columns if c not in {"trace_path", "bucket", "run_id", "run_root"}]
+    numeric_cols = [c for c in df_runs.columns if c not in {"trace_path", "bucket", "run_id", "run_root", "intervention"}]
     df_bucket = df_runs.groupby("bucket")[numeric_cols].mean().sort_index()
 
-    # Global summary: mean of bucket means
+    # Per-intervention aggregation (across all buckets)
+    df_intervention = df_runs.groupby("intervention")[numeric_cols].mean().sort_index()
+
+    # Bucket x intervention aggregation
+    df_bucket_intervention = df_runs.groupby(["bucket", "intervention"])[numeric_cols].mean().sort_index()
+
+    # Global summary: mean of bucket means (numeric only)
     global_summary = df_bucket.mean(numeric_only=True).to_dict()
 
     # Write outputs
     out_runs_csv = f"{out_prefix}_per_run.csv"
     out_bucket_csv = f"{out_prefix}_per_bucket.csv"
+    out_intervention_csv = f"{out_prefix}_per_intervention.csv"
+    out_bucket_intervention_csv = f"{out_prefix}_per_bucket_intervention.csv"
     out_global_json = f"{out_prefix}_global.json"
 
     df_runs.to_csv(out_runs_csv, index=False)
     df_bucket.to_csv(out_bucket_csv)
+    df_intervention.to_csv(out_intervention_csv)
+    df_bucket_intervention.to_csv(out_bucket_intervention_csv)
     with open(out_global_json, "w") as f:
         json.dump(global_summary, f, indent=2)
 
@@ -290,9 +338,24 @@ def main(argv: Optional[List[str]] = None) -> int:
     _ensure_dir(figs_dir)
     make_bucket_bar_figures(df_bucket, figs_dir)
 
+    # Bucket x intervention comparison figures (if HR_corr / lag columns exist)
+    if not df_bucket_intervention.empty:
+        if "HR_corr" in df_bucket_intervention.columns:
+            make_bucket_intervention_bar(df_bucket_intervention, figs_dir,
+                                         col="HR_corr", ylabel="corr(H,R)",
+                                         title="Entropy–Resonance Correlation by Bucket × Intervention",
+                                         fname="bucket_bar_corr_by_intervention.png")
+        if "lag_H_to_R_steps" in df_bucket_intervention.columns:
+            make_bucket_intervention_bar(df_bucket_intervention, figs_dir,
+                                         col="lag_H_to_R_steps", ylabel="steps",
+                                         title="Semantic Lag (H→R) by Bucket × Intervention",
+                                         fname="bucket_bar_lag_by_intervention.png")
+
     print("[SRB Aggregate] Wrote:")
     print("  ", out_runs_csv)
     print("  ", out_bucket_csv)
+    print("  ", out_intervention_csv)
+    print("  ", out_bucket_intervention_csv)
     print("  ", out_global_json)
     print("  Figures →", figs_dir)
 

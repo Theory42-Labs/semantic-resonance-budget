@@ -125,6 +125,7 @@ def main() -> None:
     ap.add_argument("--reflect_on_drop", action="store_true")
     ap.add_argument("--reflect_drop_threshold", type=float, default=0.10)
     ap.add_argument("--seed", type=int, default=None, help="Base random seed; if None, uses time-based seed. Each run uses seed = base + index.")
+    ap.add_argument("--intervention", type=str, choices=["none", "logit_shuffle", "embed_noise"], default="none", help="Intervention type to apply during generation.")
     args = ap.parse_args()
 
     base_seed = args.seed if args.seed is not None else int(time.time()) % 1_000_000
@@ -202,6 +203,9 @@ def main() -> None:
         if arg_val is not None and arg_val != parser_default_map[key]:
             cfg[key] = arg_val
 
+    # Add intervention to config
+    cfg["intervention"] = args.intervention
+
     # Attach resolved device
     cfg["device"] = device_arg
 
@@ -216,7 +220,7 @@ def main() -> None:
         set_seed(run_seed)
         cfg["seed"] = run_seed
 
-        print(f"[SRB] ▶ Running prompt {i+1}/{len(prompts)} (seed={run_seed}) → {run_dir}")
+        print(f"[SRB] ▶ Running prompt {i+1}/{len(prompts)} (seed={run_seed}, intervention={args.intervention}) → {run_dir}")
 
         # Run SRB dynamic decoding
         result: Dict[str, Any] = run_srb_dynamic(model, tok, prompt, cfg)
@@ -257,6 +261,9 @@ def main() -> None:
                 "R_collapse_steps": result.get("R_collapse_steps", 0),
                 "seed": run_seed,
             }
+
+        # Include intervention in summary
+        summary["intervention"] = args.intervention
 
         # Include final text for reference
         final_text = result.get("text", "")

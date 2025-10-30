@@ -17,6 +17,7 @@ DEFAULT_TRACE_FIELDS = [
     "d_resonance",
     "temperature",
     "top_p",
+    "intervention",  # NEW: capture experimental condition in traces
 ]
 
 
@@ -41,6 +42,7 @@ class TraceLogger:
         self._fieldnames: List[str] = []
         self._csv_file = None
         self._csv_writer = None
+        self._last_intervention = None
 
     def log_step(self, **fields: Any) -> None:
         """
@@ -56,6 +58,9 @@ class TraceLogger:
                 rounded_fields[k] = round(v, 6)
             else:
                 rounded_fields[k] = v
+
+        if "intervention" in rounded_fields and rounded_fields["intervention"]:
+            self._last_intervention = rounded_fields["intervention"]
 
         if not self._fieldnames:
             self._fieldnames = list(rounded_fields.keys())
@@ -82,6 +87,10 @@ class TraceLogger:
         if not self.trace_path.exists() or self.trace_path.stat().st_size == 0:
             header = self._fieldnames if self._fieldnames else DEFAULT_TRACE_FIELDS
             _write_csv_header_if_needed(self.trace_path, header)
+
+        # Ensure intervention is recorded in the summary (fallback to last seen or 'none')
+        if "intervention" not in summary or summary["intervention"] in (None, ""):
+            summary["intervention"] = self._last_intervention or "none"
 
         save_summary(summary, self.summary_path_file)
 

@@ -334,6 +334,8 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
     temperature = float(cfg.get("temperature_base", 0.8))
     top_p = float(cfg.get("top_p_base", DEFAULT_TOP_P))
     entropy_k = int(cfg.get("entropy_top_k", DEFAULT_TOPK))
+    # --- Intervention config ---
+    intervention = str(cfg.get("intervention", "none")).lower()
 
     messages = build_chat_prompt(tokenizer, prompt)
     enc = tokenizer(messages, return_tensors="pt").to(device)
@@ -391,8 +393,13 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
             cutoff_idx = int(torch.searchsorted(cdf, torch.tensor(top_p, device=full_probs.device)))
             cutoff_idx = max(1, cutoff_idx)
             cand_idx = sorted_idx[:cutoff_idx]
-            pick_rel = torch.multinomial(full_probs[cand_idx], num_samples=1)
-            next_token_id = int(cand_idx[pick_rel].item())
+            cand_probs = full_probs[cand_idx]
+            perm_idx = cand_idx[torch.randperm(cand_idx.numel())] if intervention == "logit_shuffle" else cand_idx
+            pick_rel = torch.multinomial(cand_probs, num_samples=1)
+            if intervention == "logit_shuffle":
+                next_token_id = int(perm_idx[pick_rel].item())
+            else:
+                next_token_id = int(cand_idx[pick_rel].item())
 
             emitted_ids.append(next_token_id)
 
@@ -402,7 +409,14 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
 
             # --- Semantic coherence and resonance computation ---
             Hn = _normalize_entropy(H, k=entropy_k)
-            embed_t = _get_last_token_embedding(o, layer=-1)
+            # Intervention for embedding noise
+            hvec = o.hidden_states[-1][0, -1, :].detach().cpu()
+            if intervention == "embed_noise":
+                dim = hvec.shape[-1]
+                std = float(hvec.std().item()) or 1.0
+                embed_t = np.random.normal(0.0, std, size=(dim,))
+            else:
+                embed_t = _get_last_token_embedding(o, layer=-1)
             C_t = _cosine_sim(embed_t, prev_embed)
             R_t = max(0.0, (1.0 - Hn) * C_t)
             dR_t = 0.0 if prev_R is None else (R_t - prev_R)
@@ -435,6 +449,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
                         "coherence": float(C_t),
                         "resonance": float(R_t),
                         "d_resonance": float(dR_t),
+                        "intervention": intervention,
                     })
                 except Exception:
                     pass
@@ -459,6 +474,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
                         "coherence": float(C_t),
                         "resonance": float(R_t),
                         "d_resonance": float(dR_t),
+                        "intervention": intervention,
                     })
                 except Exception:
                     pass
@@ -514,6 +530,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
                             "coherence": float(C_t),
                             "resonance": float(R_t),
                             "d_resonance": float(dR_t),
+                            "intervention": intervention,
                         })
                     except Exception:
                         pass
@@ -559,6 +576,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
                             "coherence": float(C_t),
                             "resonance": float(R_t),
                             "d_resonance": float(dR_t),
+                            "intervention": intervention,
                         })
                     except Exception:
                         pass
@@ -582,6 +600,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
                     "coherence": float(C_t),
                     "resonance": float(R_t),
                     "d_resonance": float(dR_t),
+                    "intervention": intervention,
                 })
             except Exception:
                 # Never fail generation due to logging
@@ -618,6 +637,7 @@ def run_srb_dynamic(model, tokenizer, prompt: str, cfg: Dict) -> Dict:
         srb_budget=srb_budget,
         per_step_data=per_step_data,
         steps=per_step_data,
+        intervention=intervention,
     )
 
 

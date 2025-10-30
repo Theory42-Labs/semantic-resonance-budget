@@ -54,6 +54,11 @@ def _read_trace_csv(path: str) -> pd.DataFrame:
         # Interpret any nonzero/nonempty as True
         if df[col].dtype != bool:
             df[col] = df[col].astype(float).fillna(0.0) != 0.0
+    # Normalize intervention column if present
+    if "intervention" in df.columns:
+        df["intervention"] = df["intervention"].astype(str).str.lower()
+    else:
+        df["intervention"] = "none"
     return df
 
 
@@ -79,6 +84,13 @@ def _safe_savefig(out_path: str) -> None:
     plt.tight_layout()
     plt.savefig(out_path, dpi=180, bbox_inches="tight")
     plt.close()
+
+
+def _get_intervention_label(df: pd.DataFrame) -> str:
+    if "intervention" in df.columns and not df["intervention"].empty:
+        val = str(df["intervention"].iloc[-1]).lower()
+        return val if val else "none"
+    return "none"
 
 
 def plot_entropy_resonance_time(df: pd.DataFrame, csv_path: str, ma_window: int = 7) -> str:
@@ -136,6 +148,10 @@ def plot_entropy_resonance_time(df: pd.DataFrame, csv_path: str, ma_window: int 
         legend_items.append(refl_scatter)
 
     fig.legend(handles=legend_items, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.02))
+    intervention = _get_intervention_label(df)
+    fig.suptitle(f"Entropy–Resonance Over Time [{intervention}]", fontsize=10)
+    base, ext = os.path.splitext(out_path)
+    out_path = f"{base}__{intervention}{ext}"
     _safe_savefig(out_path)
     return out_path
 
@@ -159,9 +175,12 @@ def plot_phase_space_quiver(df: pd.DataFrame, csv_path: str) -> str:
     plt.figure(figsize=(7.8, 6.8))
     plt.plot(H, R)
     plt.quiver(H[idx], R[idx], dH[idx], dR[idx], angles='xy', scale_units='xy', scale=1.0, width=0.0035)
+    intervention = _get_intervention_label(df)
     plt.xlabel("entropy (H)")
     plt.ylabel("resonance (R)")
-    plt.title("Phase-Space Flow (ΔR vs ΔH)")
+    plt.title(f"Phase-Space Flow (ΔR vs ΔH) [{intervention}]")
+    base, ext = os.path.splitext(out_path)
+    out_path = f"{base}__{intervention}{ext}"
     _safe_savefig(out_path)
     return out_path
 
@@ -186,10 +205,13 @@ def plot_entropy_curvature(df: pd.DataFrame, csv_path: str) -> str:
     if len(sign_change_idx):
         plt.scatter(steps[sign_change_idx], d2H_dt2[sign_change_idx])
 
+    intervention = _get_intervention_label(df)
     plt.xlabel("step")
     plt.ylabel("entropy curvature (d²H/dt²)")
-    plt.title("Entropy Curvature over Time")
+    plt.title(f"Entropy Curvature over Time [{intervention}]")
     plt.legend()
+    base, ext = os.path.splitext(out_path)
+    out_path = f"{base}__{intervention}{ext}"
     _safe_savefig(out_path)
     return out_path
 
