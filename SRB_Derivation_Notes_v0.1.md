@@ -93,7 +93,7 @@ Otherwise continue; optionally **deepen** if ``H̃_t`` is high but ``C⁺_t`` is
 
 ### Notes & Extensions
 
-- Add KL drift `D_{\mathrm{KL}}(p_t \parallel p_{t-1})` as a “surprise” measure alongside ``ΔH_t``.  
+- Add KL drift ``D_KL(p_t || p_{t-1})`` as a “surprise” measure alongside ``ΔH_t``.  
 - Explore MI proxies linking prompt features/attention tags to local collapse rate.  
 - EEG coupling (Resonance Loom) planned for human–model **dual-controller** studies.
 
