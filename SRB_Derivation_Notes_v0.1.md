@@ -7,7 +7,7 @@ Semantic Resonance Budgeting (SRB), and the initial control logic coupling them 
 
 ## 1) Token Entropy
 
-At token step \(t\) with context \(x_{\le t}\), the model’s next-token distribution \(p_t(k)\) gives:
+At token step `t` with context `x_{≤ t}`, the model’s next-token distribution `p_t(k)` gives:
 
 $$
 H_t \;=\; - \sum_{k \in V} p_t(k)\,\log p_t(k)
@@ -19,9 +19,9 @@ $$
 \hat{H}_t \;=\; \frac{H_t}{\log\!\big(\lvert V_{\text{eff},t}\rvert\big)}
 $$
 
-Where \(V_{\text{eff},t}\) may be:
-- the full vocabulary size \(|V|\) (simple, comparable), or
-- an **effective support** \(\{k : p_t(k)\ge \epsilon\}\) (focus on active mass).
+Where `V_{eff,t}` may be:
+- the full vocabulary size ``|V|`` (simple, comparable), or
+- an **effective support** ``{k : p_t(k) ≥ ε}`` (focus on active mass).
 
 ---
 
@@ -45,8 +45,8 @@ $$
 
 ## 3) Coherence / Semantic Resonance
 
-Let \(\mathbf{e}_t\) be an embedding of the recent output
-(e.g., mean of token embeddings over a sliding window of length \(w\)).
+Let ``e_t`` be an embedding of the recent output
+(e.g., mean of token embeddings over a sliding window of length `w`).
 Define directional stability between successive windows:
 
 $$
@@ -55,7 +55,7 @@ C^+_t \;=\; \cos\!\big(\mathbf{e}_{t-1},\, \mathbf{e}_t\big)
 {\lVert \mathbf{e}_{t-1}\rVert\,\lVert \mathbf{e}_t\rVert}
 $$
 
-**Interpretation:** higher \(C^+_t\) ≈ more stable semantic direction as text unfolds.
+**Interpretation:** higher ``C⁺_t`` ≈ more stable semantic direction as text unfolds.
 
 ---
 
@@ -71,20 +71,20 @@ $$
 
 ### Example early-exit guard
 
-Stop generation when, for \(\tau\) consecutive steps:
+Stop generation when, for `τ` consecutive steps:
 
-- \(\tilde{H}_t \le \theta_H\)  *(uncertainty low)*  
-- \(|\Delta\tilde{H}_t| \le \theta_\Delta\)  *(trajectory settled)*  
-- \(C^+_t \ge \theta_C\)  *(semantic direction stable)*
+- ``H̃_t`` ≤ `θ_H`  *(uncertainty low)*  
+- |``ΔH̃_t``| ≤ `θ_Δ`  *(trajectory settled)*  
+- ``C⁺_t`` ≥ `θ_C`  *(semantic direction stable)*
 
 If met → **early-exit** (semantic collapse judged stable).
-Otherwise continue; optionally **deepen** if \(\tilde{H}_t\) is high but \(C^+_t\) is increasing (seek clarity rather than exit).
+Otherwise continue; optionally **deepen** if ``H̃_t`` is high but ``C⁺_t`` is increasing (seek clarity rather than exit).
 
 ---
 
 ## 5) Research Questions (What We’re Testing)
 
-1. **Predictive validity:** do \(\tilde{H}_t\), \(\Delta\tilde{H}_t\), \(C^+_t\) predict quality, stability, and failure modes *during* generation?  
+1. **Predictive validity:** do ``H̃_t``, ``ΔH̃_t``, ``C⁺_t`` predict quality, stability, and failure modes *during* generation?  
 2. **Utility:** can the joint signal enable **compute savings** (early-exit / adaptive depth) **without quality loss**?  
 3. **Generalization:** do collapse curves reveal **model- and task-invariant structure** (semantic thermodynamics signatures)?  
 4. **Ablations/nulls:** does randomizing local logits or removing coherence degrade control performance as expected?
@@ -93,7 +93,7 @@ Otherwise continue; optionally **deepen** if \(\tilde{H}_t\) is high but \(C^+_t
 
 ### Notes & Extensions
 
-- Add KL drift \(D_{\mathrm{KL}}(p_t \parallel p_{t-1})\) as a “surprise” measure alongside \(\Delta H_t\).  
+- Add KL drift `D_{\mathrm{KL}}(p_t \parallel p_{t-1})` as a “surprise” measure alongside ``ΔH_t``.  
 - Explore MI proxies linking prompt features/attention tags to local collapse rate.  
 - EEG coupling (Resonance Loom) planned for human–model **dual-controller** studies.
 
