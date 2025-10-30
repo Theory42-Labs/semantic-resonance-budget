@@ -79,6 +79,26 @@ python experiments/longform/run_longform.py \
 
 ---
 
+### 🧪 Validation Plan & Reproducibility
+
+All planned falsification experiments, hypotheses, and test criteria are documented in  
+[`docs/Planned_Validations.md`](docs/Planned_Validations.md).
+
+If you're contributing new metrics or validation data:
+1. Run existing test scripts in `experiments/` to maintain reproducibility.
+2. Log results in `runs/` using the defined JSONL schema.
+3. Update the validation matrix in `docs/Planned_Validations.md` as appropriate.
+
+For a quick start with metric testing:
+```bash
+python experiments/run_srb_eval.py \
+  --config experiments/configs/matrix.yaml \
+  --tasks experiments/configs/tasks.yaml \
+  --device auto
+```
+
+---
+
 ### 📘 Licensing
 SRB is released under a **dual-license model**:
 
