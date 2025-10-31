@@ -1,0 +1,9 @@
+{
+  "timestamp": "20251030_195541",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "window_words": 30,
+  "step_words": 15,
+  "max_new_tokens": 220,
+  "temperature": 0.9,
+  "top_p": 0.95
+}
