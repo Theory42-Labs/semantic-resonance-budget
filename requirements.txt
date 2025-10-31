@@ -1,5 +1,3 @@
-
-
 # Core ML and model inference
 torch>=2.2.0
 transformers>=4.42.0
@@ -22,3 +20,20 @@ scipy>=1.13.0
 pytest>=8.0.0
 ipykernel>=6.29.0
 jupyter>=1.0.0
+
+# ───── Added for SRB Phase II ─────
+
+# Dimensionality reduction for trajectory projections
+umap-learn>=0.5.6
+
+# Topological Data Analysis (Betti numbers via persistent homology)
+ripser>=0.6.4
+
+# Classic ML helpers (needed by UMAP and general utilities)
+scikit-learn>=1.5.0
+
+# Information-theoretic metrics (transfer entropy, etc.)
+pyinform>=0.2.0
+
+# (Dev) Lint/format optional but handy
+ruff>=0.5.0
