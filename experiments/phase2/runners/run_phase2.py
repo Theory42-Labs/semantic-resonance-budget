@@ -25,9 +25,9 @@ model:
   temperature: 0.7
   top_p: 0.95
 experiment:
-  runs: 2
-  buckets: ["creative"]
-  interventions: ["baseline", "force_chain"]
+  runs: 30
+  buckets: ["creative", "factual", "reasoning"]
+  interventions: ["baseline", "embed_noise", "delay_think", "force_chain"]
   verifier_model: "prajjwal1/bert-tiny"
 metrics:
   transfer_entropy:
