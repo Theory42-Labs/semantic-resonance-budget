@@ -336,8 +336,16 @@ class CrossEntropySurprise:
             else:
                 self._device = "cpu"
             self._tok = AutoTokenizer.from_pretrained(self.name)
+            # Ensure pad token exists to avoid zero-length/shape issues
+            if self._tok.pad_token_id is None and self._tok.eos_token_id is not None:
+                self._tok.pad_token = self._tok.eos_token
+            self._tok.padding_side = "left"
             _dtype = torch.bfloat16 if self._device == "cuda" else (torch.float16 if self._device == "mps" else torch.float32)
-            self._lm = AutoModelForCausalLM.from_pretrained(self.name, low_cpu_mem_usage=True, torch_dtype=_dtype)
+            self._lm = AutoModelForCausalLM.from_pretrained(
+                self.name,
+                low_cpu_mem_usage=True,
+                torch_dtype=_dtype,
+            )
             self._lm.to(self._device); self._lm.eval()
             self._hf_ok = True
             print(f"[SRB][HF] CrossEntropySurprise using HF model: {self.name} (device={self._device})")
@@ -348,11 +356,26 @@ class CrossEntropySurprise:
         if self._hf_ok and self._tok is not None and self._lm is not None:
             try:
                 import torch  # type: ignore
+                txt = (response_text or "").strip()
+                if not txt:
+                    return 1.5  # neutral fallback for empty text
                 with torch.no_grad():
-                    enc = self._tok(response_text, return_tensors="pt", truncation=True, max_length=1024)
+                    enc = self._tok(
+                        txt,
+                        return_tensors="pt",
+                        truncation=True,
+                        max_length=1024,
+                        padding=True,
+                    )
+                    # Guard: zero or single-token sequences can trigger shape errors in some models
+                    if enc["input_ids"].ndim != 2 or enc["input_ids"].shape[1] < 2:
+                        return 1.5
                     enc = {k: v.to(self._device) for k, v in enc.items()}
                     out = self._lm(**enc, labels=enc["input_ids"])
-                    return float(out.loss.detach().cpu().item())
+                    val = out.loss.detach().float().cpu().item()
+                    if not (val == val) or val == float("inf"):
+                        return 1.5
+                    return float(val)
             except Exception as e:
                 print(f"[SRB][HF] NLL computation failed, using stub: {e}")
         # stub
@@ -635,8 +658,10 @@ class Phase4Runner:
                 )
             # Slice off the prompt portion
             gen_ids = out[0][enc["input_ids"].shape[1]:]
-            text = _HF_TOK.decode(gen_ids, skip_special_tokens=True)
-            return text.strip()
+            text = _HF_TOK.decode(gen_ids, skip_special_tokens=True).strip()
+            if not text:
+                text = "[EMPTY]"
+            return text
         except Exception as e:
             return f"[MODEL OUTPUT:FALLBACK:{type(e).__name__}] {prompt[:64]} …"
 
