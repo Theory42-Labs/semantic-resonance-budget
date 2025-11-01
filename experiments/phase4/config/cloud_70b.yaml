@@ -18,7 +18,6 @@ experiment:
 metrics:
   transfer_entropy:
     history_window: 8
-    jitter: 1e-6
     estimator: ksg
 
   cross_entropy:
