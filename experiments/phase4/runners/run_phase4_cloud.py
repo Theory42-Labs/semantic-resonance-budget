@@ -92,31 +92,95 @@ def _init_hf_generator(model_name: str, device: str = "cpu"):
     global _HF_TOK, _HF_LM, _HF_DEVICE
     if _HF_LM is not None and _HF_TOK is not None:
         return
-    # Device selection for mps/cuda
+
+    # Device selection for mps/cuda/cpu
     use_cuda = (device in ("cuda", "cuda:0") and torch.cuda.is_available())
     use_mps  = (device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available())
     _HF_DEVICE = "cuda" if use_cuda else ("mps" if use_mps else "cpu")
+
     # Tokenizer
     _HF_TOK = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     if _HF_TOK.pad_token_id is None and _HF_TOK.eos_token_id is not None:
         _HF_TOK.pad_token = _HF_TOK.eos_token
     _HF_TOK.padding_side = "left"
-    # Model
-    dtype = torch.bfloat16 if _HF_DEVICE == "cuda" else (torch.float16 if _HF_DEVICE == "mps" else torch.float32)
+
+    # Quantization / device mapping strategy (env-driven)
+    # SRB_LOAD_IN_4BIT=1 -> 4-bit NF4 on CUDA
+    # SRB_LOAD_IN_8BIT=1 -> 8-bit on CUDA
+    # SRB_DEVICE_MAP=auto to enable accelerate device_map auto
+    # SRB_GPU_MEM_GB to set per-GPU budget (string like "78GiB")
+    load_in_4bit = os.environ.get("SRB_LOAD_IN_4BIT", "0") == "1"
+    load_in_8bit = os.environ.get("SRB_LOAD_IN_8BIT", "0") == "1"
+    device_map_env = os.environ.get("SRB_DEVICE_MAP", "none").lower()
+    gpu_mem_budget = os.environ.get("SRB_GPU_MEM_GB")  # e.g., "78GiB"
+
+    devmap = None
+    if _HF_DEVICE == "cuda" and device_map_env == "auto":
+        devmap = "auto"
+
+    # Build bitsandbytes config if requested and available
+    bnb_config = None
+    if _HF_DEVICE == "cuda" and (load_in_4bit or load_in_8bit):
+        try:
+            from transformers import BitsAndBytesConfig  # type: ignore
+            if load_in_4bit:
+                bnb_config = BitsAndBytesConfig(
+                    load_in_4bit=True,
+                    bnb_4bit_quant_type="nf4",
+                    bnb_4bit_use_double_quant=True,
+                    bnb_4bit_compute_dtype=torch.bfloat16,
+                )
+            elif load_in_8bit:
+                bnb_config = BitsAndBytesConfig(
+                    load_in_8bit=True,
+                )
+        except Exception as e:
+            print(f"[SRB][HF] BitsAndBytes not available; continuing without quantization: {e}")
+            bnb_config = None
+            load_in_4bit = False
+            load_in_8bit = False
+
+    # Choose dtype
+    # For CUDA with quantization, compute dtype is bfloat16; otherwise bfloat16 for large models.
+    if _HF_DEVICE == "cuda":
+        dtype = torch.bfloat16
+    elif _HF_DEVICE == "mps":
+        dtype = torch.float16
+    else:
+        dtype = torch.float32
+
+    # Max memory budgeting (avoid hard OOM; allows CPU offload)
+    max_memory = None
+    if _HF_DEVICE == "cuda":
+        # Leave a small headroom; allow CPU spill if needed.
+        gpu_budget = gpu_mem_budget if gpu_mem_budget else "78GiB"
+        max_memory = {0: gpu_budget, "cpu": "96GiB"}
+    elif _HF_DEVICE == "cpu":
+        max_memory = {"cpu": "96GiB"}
+
+    # Finally, load the model
     _HF_LM = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=dtype,
         low_cpu_mem_usage=True,
-        device_map=None,
+        device_map=devmap,
+        quantization_config=bnb_config,
+        max_memory=max_memory,
     )
+
+    # Prefer SDPA attention when available
     try:
-        # Prefer SDPA attention when available (safe on MPS)
         _HF_LM.config.attn_implementation = "sdpa"
     except Exception:
         pass
-    _HF_LM.to(_HF_DEVICE)
+
+    # Move to device if not already mapped
+    if devmap is None:
+        _HF_LM.to(_HF_DEVICE)
+
     _HF_LM.eval()
-    print(f"[SRB][HF] Generator using: {model_name} (device={_HF_DEVICE}, dtype={dtype})")
+    print(f"[SRB][HF] Generator using: {model_name} (device={_HF_DEVICE}, dtype={dtype}, "
+          f"4bit={load_in_4bit}, 8bit={load_in_8bit}, devmap={devmap}, maxmem={max_memory})")
 
 # ─────────────────────────── Data/config utils ────────────────────────────────
 
@@ -528,6 +592,7 @@ class Phase4Runner:
         except Exception as e:
             print(f"[SRB][HF] Generator init failed (falling back to stub): {e}")
 
+        # Note quantization/device-map status (if any)
         self.capabilities = {
             "umap_used": getattr(self.geo, "_umap_available", False),
             "ripser_used": getattr(self.geo, "_ripser_available", False),
@@ -539,6 +604,9 @@ class Phase4Runner:
             "hf_device": _HF_DEVICE if "_HF_DEVICE" in globals() else "unset",
             "dtype": str(getattr(_HF_LM, "dtype", "unknown")) if "_HF_LM" in globals() and _HF_LM is not None else "unknown",
             "temperature": self.cfg.temperature,
+            "quantization": os.environ.get("SRB_LOAD_IN_4BIT", "0") == "1" and "4bit" or (os.environ.get("SRB_LOAD_IN_8BIT", "0") == "1" and "8bit" or "none"),
+            "device_map": os.environ.get("SRB_DEVICE_MAP", "none"),
+            "gpu_mem_budget": os.environ.get("SRB_GPU_MEM_GB", "unset"),
         }
 
         # Reference store for Phase-4 stability metrics
