@@ -20,9 +20,9 @@ from __future__ import annotations
 CONFIG_YAML = """\
 seed: 42
 output_dir: experiments/phase4/reports
-device: mps
+device: cuda
 model:
-  name: gpt-4o-mini
+  name: meta-llama/Llama-3.2-3B-Instruct
   max_new_tokens: 256
   temperature: 0.7
   top_p: 0.95
@@ -37,6 +37,9 @@ metrics:
     estimator: ksg
   cross_entropy:
     baseline_model: "sshleifer/tiny-gpt2"
+    device: cpu
+  verifier:
+    device: cpu
   semantic_primitives:
     nsm_list_path: experiments/phase3/vendors/nsm_primitives.txt
     weight: 1.0
@@ -73,6 +76,11 @@ os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
 warnings.filterwarnings("ignore", message="n_jobs value 1 overridden*")
 warnings.filterwarnings("ignore", category=RuntimeWarning, message=r".*matmul.*")
+os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "1")
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+if torch.cuda.is_available():
+    try: torch.set_float32_matmul_precision("high")
+    except Exception: pass
 
 # ───────────────────── HF text generation (lazy, cached) ────────────────────
 _HF_TOK = None
@@ -84,20 +92,22 @@ def _init_hf_generator(model_name: str, device: str = "cpu"):
     global _HF_TOK, _HF_LM, _HF_DEVICE
     if _HF_LM is not None and _HF_TOK is not None:
         return
-    # Device selection for mps
-    use_mps = (device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available())
-    _HF_DEVICE = "mps" if use_mps else "cpu"
+    # Device selection for mps/cuda
+    use_cuda = (device in ("cuda", "cuda:0") and torch.cuda.is_available())
+    use_mps  = (device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available())
+    _HF_DEVICE = "cuda" if use_cuda else ("mps" if use_mps else "cpu")
     # Tokenizer
     _HF_TOK = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     if _HF_TOK.pad_token_id is None and _HF_TOK.eos_token_id is not None:
         _HF_TOK.pad_token = _HF_TOK.eos_token
     _HF_TOK.padding_side = "left"
     # Model
-    dtype = torch.float16 if _HF_DEVICE == "mps" else torch.float32
+    dtype = torch.bfloat16 if _HF_DEVICE == "cuda" else (torch.float16 if _HF_DEVICE == "mps" else torch.float32)
     _HF_LM = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=dtype,
         low_cpu_mem_usage=True,
+        device_map=None,
     )
     try:
         # Prefer SDPA attention when available (safe on MPS)
@@ -255,10 +265,15 @@ class CrossEntropySurprise:
             from transformers import AutoTokenizer, AutoModelForCausalLM  # type: ignore
             import torch  # type: ignore
             # device selection
-            if device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            if device in ("cuda","cuda:0") and torch.cuda.is_available():
+                self._device = "cuda"
+            elif device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
                 self._device = "mps"
+            else:
+                self._device = "cpu"
             self._tok = AutoTokenizer.from_pretrained(self.name)
-            self._lm = AutoModelForCausalLM.from_pretrained(self.name)
+            _dtype = torch.bfloat16 if self._device == "cuda" else (torch.float16 if self._device == "mps" else torch.float32)
+            self._lm = AutoModelForCausalLM.from_pretrained(self.name, low_cpu_mem_usage=True, torch_dtype=_dtype)
             self._lm.to(self._device); self._lm.eval()
             self._hf_ok = True
             print(f"[SRB][HF] CrossEntropySurprise using HF model: {self.name} (device={self._device})")
@@ -432,10 +447,14 @@ class SimpleVerifier:
         try:
             from transformers import AutoTokenizer, AutoModel  # type: ignore
             import torch  # type: ignore
-            if device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            if device in ("cuda","cuda:0") and torch.cuda.is_available():
+                self._device = "cuda"
+            elif device == "mps" and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
                 self._device = "mps"
+            else:
+                self._device = "cpu"
             self._tok = AutoTokenizer.from_pretrained(self.name)
-            self._enc = AutoModel.from_pretrained(self.name)
+            self._enc = AutoModel.from_pretrained(self.name, low_cpu_mem_usage=True)
             self._enc.to(self._device); self._enc.eval()
             self._hf_ok = True
             print(f"[SRB][HF] Verifier using HF encoder: {self.name} (device={self._device})")
@@ -492,10 +511,12 @@ class Phase4Runner:
         geo_cfg = cfg.metrics.get("geometry", {})
 
         self.te = TransferEntropy(**te_cfg)
-        self.xent = CrossEntropySurprise(xent_cfg.get("baseline_model", cfg.model_name), device=cfg.device)
+        xent_device = xent_cfg.get("device", "cpu")
+        ver_device  = cfg.metrics.get("verifier", {}).get("device", "cpu")
+        self.xent = CrossEntropySurprise(xent_cfg.get("baseline_model", cfg.model_name), device=xent_device)
         self.nsm = SemanticPrimitiveCoherence(nsm_cfg.get("nsm_list_path", "experiments/phase3/vendors/nsm_primitives.txt"))
         self.geo = GeometryProbe(geo_cfg.get("umap", {}), geo_cfg.get("tda", {}))
-        self.verifier = SimpleVerifier(cfg.verifier_model, device=cfg.device)
+        self.verifier = SimpleVerifier(cfg.verifier_model, device=ver_device)
 
         # Initialize HF generator for the configured model
         try:
@@ -514,7 +535,9 @@ class Phase4Runner:
             "hf_verifier_used": getattr(self.verifier, "_hf_ok", False),
             "model_name": self.cfg.model_name,
             "verifier_model": self.cfg.verifier_model,
-            "device": self.cfg.device,
+            "device_requested": self.cfg.device,
+            "hf_device": _HF_DEVICE if "_HF_DEVICE" in globals() else "unset",
+            "dtype": str(getattr(_HF_LM, "dtype", "unknown")) if "_HF_LM" in globals() and _HF_LM is not None else "unknown",
             "temperature": self.cfg.temperature,
         }
 
@@ -624,6 +647,14 @@ class Phase4Runner:
 
                     rows.append(rec)
                     self.io.append_jsonl(rec, name="phase4_records")
+                    import gc
+                    gc.collect()
+                    if torch.cuda.is_available():
+                        try: torch.cuda.empty_cache()
+                        except Exception: pass
+                    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                        try: torch.mps.empty_cache()
+                        except Exception: pass
 
         self.io.write_csv_rows(rows, name="phase4_summary")
         print(f"Saved {len(rows)} records → {self.io.output_dir}")
@@ -654,7 +685,7 @@ if __name__ == "__main__":
     parser.add_argument("--model", type=str)
     parser.add_argument("--verifier", type=str)
     parser.add_argument("--temperature", type=float)
-    parser.add_argument("--device", type=str, choices=["cpu","mps"])
+    parser.add_argument("--device", type=str, choices=["cpu","mps","cuda"])
     parser.add_argument("--output_suffix", type=str)
     args = parser.parse_args()
 
