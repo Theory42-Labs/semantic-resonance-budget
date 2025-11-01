@@ -17,7 +17,8 @@ experiment:
 
 metrics:
   transfer_entropy:
-    history_window: 3
+    history_window: 8
+    jitter: 1e-6
     estimator: ksg
 
   cross_entropy:
@@ -34,10 +35,11 @@ metrics:
   geometry:
     collect_token_embeddings: true
     umap:
-      n_neighbors: 15
+      n_neighbors: 20
       min_dist: 0.15
       n_components: 2
       metric: euclidean
+      random_state: 42
     tda:
       compute_persistent_homology: true
       max_dim: 1
@@ -45,4 +47,4 @@ metrics:
 logging:
   csv: true
   jsonl: true
-  plots: false     # set true when you want auto-plots from the runner
+  plots: true     # set true when you want auto-plots from the runner
