@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 SRB Phase IV – Self-Anchor & Reflective Guard Runner
 Components:
@@ -13,6 +14,15 @@ Components:
       - traj_drift: 1 - similarity(response, previous_response_in_same_run)
       - (These approximate semantic stability and trajectory continuity)
 """
+
+# --- SRB NVML bypass (aligns with GCP image mismatch) ---
+import os as _srb_os
+_srb_os.environ.setdefault("CUDA_DISABLE_NVML", "1")
+_srb_os.environ.setdefault("PYTORCH_NVML_BASED_CUDA_CHECK", "0")
+_srb_os.environ.setdefault("PYTORCH_NO_NVML", "1")
+_srb_os.environ.setdefault("C10_DISABLE_NVML", "1")
+_srb_os.environ.setdefault("C10_CUDA_USE_NVML", "0")
+# --------------------------------------------------------
 
 from __future__ import annotations
 
