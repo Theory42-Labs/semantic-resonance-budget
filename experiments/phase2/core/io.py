@@ -24,14 +24,38 @@ class IO:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def write_json(self, data: dict, name: str):
+        from pathlib import Path
+        import dataclasses
+
+        def _json_default(o):
+            if isinstance(o, Path):
+                return str(o)
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)
+            if isinstance(o, set):
+                return list(o)
+            return str(o)
+
         path = self.output_dir / f"{name}.json"
-        path.write_text(json.dumps(data, indent=2))
+        path.write_text(json.dumps(data, indent=2, default=_json_default))
         return path
 
     def append_jsonl(self, data: dict, name: str):
+        from pathlib import Path
+        import dataclasses
+
+        def _json_default(o):
+            if isinstance(o, Path):
+                return str(o)
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)
+            if isinstance(o, set):
+                return list(o)
+            return str(o)
+
         path = self.output_dir / f"{name}.jsonl"
         with path.open("a") as f:
-            f.write(json.dumps(data) + "\n")
+            f.write(json.dumps(data, default=_json_default) + "\n")
         return path
 
     def write_csv_rows(self, rows: list[dict], name: str):

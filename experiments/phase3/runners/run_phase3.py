@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-SRB Phase II – Falsification Runner
+SRB Phase III – Cross-Model Falsification Runner
 Components:
   • Transfer Entropy (prompt → response)
   • NSM Primitive Coherence
   • Cross-Entropy Surprise (baseline NLL)
-  • Geometry probe (UMAP trajectory placeholder + Betti summary placeholder)
-  • External SimpleBERT-style verifier (separate session)
+  • Geometry probe (UMAP trajectory placeholder, UMAP neighbor cap, Betti summary placeholder)
+  • External MiniLM verifier (separate session)
 
 This file is intentionally self-contained with TODO stubs you can replace
 with your actual model/tokenizer/embedding calls.
@@ -18,25 +18,26 @@ from __future__ import annotations
 # ───────────────────────── Embedded default YAML ──────────────────────────────
 CONFIG_YAML = """\
 seed: 42
-output_dir: experiments/phase2/reports
+output_dir: experiments/phase3/reports
+device: mps
 model:
   name: gpt-4o-mini
   max_new_tokens: 256
   temperature: 0.7
   top_p: 0.95
 experiment:
-  runs: 30
+  runs: 200
   buckets: ["creative", "factual", "reasoning"]
-  interventions: ["baseline", "embed_noise", "delay_think", "force_chain"]
-  verifier_model: "prajjwal1/bert-tiny"
+  interventions: ["baseline", "embed_noise", "delay_think", "force_chain", "force_chain_strict"]
+  verifier_model: "sentence-transformers/all-MiniLM-L6-v2"
 metrics:
   transfer_entropy:
     history_window: 3
     estimator: ksg
   cross_entropy:
-    baseline_model: "gpt-4o-mini"
+    baseline_model: "sshleifer/tiny-gpt2"
   semantic_primitives:
-    nsm_list_path: experiments/phase2/vendors/nsm_primitives.txt
+    nsm_list_path: experiments/phase3/vendors/nsm_primitives.txt
     weight: 1.0
   geometry:
     collect_token_embeddings: true
@@ -64,6 +65,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Tuple
+import os, warnings
+from tqdm import tqdm
 
 import yaml  # pip install pyyaml
 
@@ -74,6 +77,7 @@ import yaml  # pip install pyyaml
 class RunConfig:
     seed: int
     output_dir: Path
+    device: str
     model_name: str
     max_new_tokens: int
     temperature: float
@@ -92,14 +96,28 @@ class IO:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def write_json(self, data: dict, name: str):
+        from pathlib import Path
+        import dataclasses
+        def _json_default(o):
+            if isinstance(o, Path): return str(o)
+            if dataclasses.is_dataclass(o): return dataclasses.asdict(o)
+            if isinstance(o, set): return list(o)
+            return str(o)
         path = self.output_dir / f"{name}.json"
-        path.write_text(json.dumps(data, indent=2))
+        path.write_text(json.dumps(data, indent=2, default=_json_default))
         return path
 
     def append_jsonl(self, data: dict, name: str):
+        from pathlib import Path
+        import dataclasses
+        def _json_default(o):
+            if isinstance(o, Path): return str(o)
+            if dataclasses.is_dataclass(o): return dataclasses.asdict(o)
+            if isinstance(o, set): return list(o)
+            return str(o)
         path = self.output_dir / f"{name}.jsonl"
         with path.open("a") as f:
-            f.write(json.dumps(data) + "\n")
+            f.write(json.dumps(data, default=_json_default) + "\n")
         return path
 
     def write_csv_rows(self, rows: list[dict], name: str):
@@ -158,6 +176,8 @@ class Intervention:
             return "(Take a deep breath and think for a moment.)\n" + prompt
         if kind == "force_chain":
             return prompt + "\n\nPlease reason step-by-step before final answer."
+        if kind == "force_chain_strict":
+            return prompt + "\n\nYou MUST reason in numbered steps, then provide a FINAL ANSWER block."
         # Extend with more structured interventions as needed
         return prompt
 
@@ -219,13 +239,22 @@ class CrossEntropySurprise:
     deterministic heuristic so the pipeline always runs.
     """
 
-    def __init__(self, baseline_model_name: str):
+    def __init__(self, baseline_model_name: str, device: str = "cpu"):
         self.name = baseline_model_name
         self._hf_ok = False
         self._tok = None
         self._lm = None
-        self._device = "cpu"  # keep CPU for portability
-
+        self._device = device
+        # Detect MPS availability if requested
+        if device == "mps":
+            try:
+                import torch
+                if hasattr(torch, "has_mps") and torch.has_mps:
+                    self._device = "mps"
+                else:
+                    self._device = "cpu"
+            except Exception:
+                self._device = "cpu"
         try:
             # Lazy import to avoid hard dependency if user hasn't installed transformers/torch
             from transformers import AutoTokenizer, AutoModelForCausalLM  # type: ignore
@@ -354,11 +383,17 @@ class GeometryProbe:
         return [[hash(t) % 101 / 100.0] for t in tokens]
 
     def umap_project(self, X: list[list[float]]) -> list[tuple[float, float]]:
+        # Cap n_neighbors at min(cap_in, len(X)-2)
+        n_neighbors_in = self.umap_cfg.get("n_neighbors", 15)
+        if len(X) < 3:
+            # Not enough samples for UMAP, return stub
+            return [(float(i), row[0]) for i, row in enumerate(X)]
+        cap = min(n_neighbors_in, len(X) - 2)
         if self._umap_available:
             try:
                 import umap
                 reducer = umap.UMAP(
-                    n_neighbors=self.umap_cfg.get("n_neighbors", 15),
+                    n_neighbors=cap,
                     min_dist=self.umap_cfg.get("min_dist", 0.1),
                     n_components=self.umap_cfg.get("n_components", 2),
                     random_state=42,
@@ -398,13 +433,22 @@ class SimpleBERTVerifier:
     if HF isn't available. Keep this verifier *logically* outside the main design loop.
     """
 
-    def __init__(self, model_name: str):
+    def __init__(self, model_name: str, device: str = "cpu"):
         self.name = model_name
         self._hf_ok = False
         self._tok = None
         self._enc = None
-        self._device = "cpu"  # CPU for portability
-
+        self._device = device
+        # Detect MPS availability if requested
+        if device == "mps":
+            try:
+                import torch
+                if hasattr(torch, "has_mps") and torch.has_mps:
+                    self._device = "mps"
+                else:
+                    self._device = "cpu"
+            except Exception:
+                self._device = "cpu"
         try:
             from transformers import AutoTokenizer, AutoModel  # type: ignore
             import torch  # type: ignore
@@ -471,10 +515,14 @@ class SimpleBERTVerifier:
 # ───────────────────────────── Runner ─────────────────────────────────────────
 
 
-class Phase2Runner:
+class Phase3Runner:
     def __init__(self, cfg: RunConfig):
         self.cfg = cfg
         self.io = IO(cfg)
+        # Timestamped subdirectory for output
+        stamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        self.io.output_dir = self.io.output_dir / f"run_{stamp}"
+        self.io.output_dir.mkdir(parents=True, exist_ok=True)
         self.prompts = PromptBank()
 
         te_cfg = cfg.metrics.get("transfer_entropy", {})
@@ -483,12 +531,24 @@ class Phase2Runner:
         geo_cfg = cfg.metrics.get("geometry", {})
 
         self.te = TransferEntropy(**te_cfg)
-        self.xent = CrossEntropySurprise(xent_cfg.get("baseline_model", cfg.model_name))
+        self.xent = CrossEntropySurprise(xent_cfg.get("baseline_model", cfg.model_name), device=cfg.device)
         self.nsm = SemanticPrimitiveCoherence(
-            nsm_cfg.get("nsm_list_path", "experiments/phase2/vendors/nsm_primitives.txt")
+            nsm_cfg.get("nsm_list_path", "experiments/phase3/vendors/nsm_primitives.txt")
         )
         self.geo = GeometryProbe(geo_cfg.get("umap", {}), geo_cfg.get("tda", {}))
-        self.verifier = SimpleBERTVerifier(cfg.verifier_model)
+        self.verifier = SimpleBERTVerifier(cfg.verifier_model, device=cfg.device)
+
+        # Capabilities flags
+        self.capabilities = dict(
+            umap_used=getattr(self.geo, "_umap_available", False),
+            ripser_used=getattr(self.geo, "_ripser_available", False),
+            hf_nll_used=getattr(self.xent, "_hf_ok", False),
+            hf_verifier_used=getattr(self.verifier, "_hf_ok", False),
+            model_name=cfg.model_name,
+            verifier_model=cfg.verifier_model,
+            device=cfg.device,
+            temperature=cfg.temperature,
+        )
 
     # TODO: Replace this with your actual model invocation
     def _gen(self, prompt: str) -> str:
@@ -504,10 +564,10 @@ class Phase2Runner:
         rows: list[dict] = []
         timestamp = datetime.utcnow().isoformat()
 
-        self.io.write_json({"config": self.cfg.__dict__, "timestamp": timestamp}, name="phase2_config")
+        self.io.write_json({"config": self.cfg.__dict__, "timestamp": timestamp, "capabilities": self.capabilities}, name="phase3_config")
 
         for bucket in self.cfg.buckets:
-            for i in range(self.cfg.runs):
+            for i in tqdm(range(self.cfg.runs), desc=f"bucket={bucket}", leave=False):
                 for inter in self.cfg.interventions:
                     base_prompt = self.prompts.sample(bucket)
                     prompt_i = Intervention.apply(inter, base_prompt.text)
@@ -545,9 +605,9 @@ class Phase2Runner:
                     }
 
                     rows.append(rec)
-                    self.io.append_jsonl(rec, name="phase2_records")
+                    self.io.append_jsonl(rec, name="phase3_records")
 
-        self.io.write_csv_rows(rows, name="phase2_summary")
+        self.io.write_csv_rows(rows, name="phase3_summary")
         print(f"Saved {len(rows)} records → {self.cfg.output_dir}")
 
 
@@ -559,6 +619,7 @@ def load_cfg_from_yaml(yaml_text: str) -> RunConfig:
     return RunConfig(
         seed=cfg["seed"],
         output_dir=Path(cfg["output_dir"]),
+        device=cfg.get("device", "cpu"),
         model_name=cfg["model"]["name"],
         max_new_tokens=cfg["model"]["max_new_tokens"],
         temperature=cfg["model"]["temperature"],
@@ -572,20 +633,60 @@ def load_cfg_from_yaml(yaml_text: str) -> RunConfig:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="SRB Phase II Falsification Runner")
+    # Set environment variables and warnings before parsing args
+    os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+    os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+    warnings.filterwarnings("ignore", message="n_jobs value 1 overridden*")
+
+    parser = argparse.ArgumentParser(description="SRB Phase III Runner")
     parser.add_argument(
         "--config",
         type=str,
         default=None,
         help="Path to YAML config (optional; uses embedded defaults if omitted)",
     )
+    parser.add_argument("--runs", type=int, default=None, help="Override number of runs")
+    parser.add_argument("--model", type=str, default=None, help="Override model name")
+    parser.add_argument("--verifier", type=str, default=None, help="Override verifier model")
+    parser.add_argument("--temperature", type=float, default=None, help="Override model temperature")
+    parser.add_argument("--device", type=str, choices=["cpu", "mps"], default=None, help="Device to use (cpu|mps)")
+    parser.add_argument("--output_suffix", type=str, default=None, help="Append suffix to output dir")
     args = parser.parse_args()
 
+    # Config loading logic
+    cfg_text = None
+    config_paths = []
     if args.config:
-        cfg_text = Path(args.config).read_text()
+        config_paths.append(args.config)
     else:
+        config_paths.append("experiments/phase3/config/defaults.yaml")
+    found = False
+    for p in config_paths:
+        try:
+            cfg_text = Path(p).read_text()
+            found = True
+            break
+        except Exception:
+            pass
+    if not found:
         cfg_text = CONFIG_YAML
 
     cfg = load_cfg_from_yaml(cfg_text)
-    runner = Phase2Runner(cfg)
+    # CLI overrides
+    if args.runs is not None:
+        cfg.runs = args.runs
+    if args.model is not None:
+        cfg.model_name = args.model
+    if args.verifier is not None:
+        cfg.verifier_model = args.verifier
+    if args.temperature is not None:
+        cfg.temperature = args.temperature
+    if args.device is not None:
+        cfg.device = args.device
+
+    runner = Phase3Runner(cfg)
+    # If output_suffix, append to timestamped directory and ensure it exists
+    if args.output_suffix:
+        runner.io.output_dir = Path(str(runner.io.output_dir) + f"_{args.output_suffix}")
+        runner.io.output_dir.mkdir(parents=True, exist_ok=True)
     runner.run()

@@ -1,0 +1,57 @@
+seed: 42
+
+# Where Phase 3 outputs land (runner will append a timestamped subfolder)
+output_dir: experiments/phase3/reports
+
+device: mps   # "mps" on Apple Silicon; runner should fall back to "cpu" if unavailable
+
+model:
+  # Generator to produce text for each (bucket × intervention). Keep this as-is
+  # if you're using your existing pipeline; override via CLI in the runner.
+  name: gpt-4o-mini
+  max_new_tokens: 256
+  temperature: 0.7
+  top_p: 0.95
+
+experiment:
+  # Scale target: 150–200 per bucket is ideal; you can override with --runs
+  runs: 200
+  buckets: ["creative", "factual", "reasoning"]
+
+  # Phase 3 adds a stronger CoT condition for dose–response
+  interventions: ["baseline", "embed_noise", "delay_think", "force_chain", "force_chain_strict"]
+
+  # Stronger semantic encoder than bert-tiny; still fast
+  verifier_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+metrics:
+  transfer_entropy:
+    history_window: 3
+    estimator: ksg
+
+  cross_entropy:
+    # Keep tiny scorer for speed first; later try "microsoft/Phi-2" for robustness
+    baseline_model: "sshleifer/tiny-gpt2"
+
+  semantic_primitives:
+    # Move the primitives file into phase3/vendors; copy your file over
+    nsm_list_path: experiments/phase3/vendors/nsm_primitives.txt
+    weight: 1.0
+
+  geometry:
+    collect_token_embeddings: true
+    umap:
+      # Runner should cap this at min(n_neighbors, n_samples-2) to avoid warnings
+      n_neighbors: 15
+      min_dist: 0.1
+      n_components: 2
+    tda:
+      compute_persistent_homology: true
+      max_dim: 1
+
+logging:
+  csv: true
+  jsonl: true
+  plots: true
+  # Optional: set to true if you add per-run PNG summary export in the runner
+  poster: false
