@@ -15,6 +15,8 @@ Components:
       - (These approximate semantic stability and trajectory continuity)
 """
 
+from __future__ import annotations
+
 # --- SRB NVML bypass (aligns with GCP image mismatch) ---
 import os as _srb_os
 _srb_os.environ.setdefault("CUDA_DISABLE_NVML", "1")
@@ -23,8 +25,6 @@ _srb_os.environ.setdefault("PYTORCH_NO_NVML", "1")
 _srb_os.environ.setdefault("C10_DISABLE_NVML", "1")
 _srb_os.environ.setdefault("C10_CUDA_USE_NVML", "0")
 # --------------------------------------------------------
-
-from __future__ import annotations
 
 # ───────────────────────── Embedded default YAML (fallback) ───────────────────
 CONFIG_YAML = """\
