@@ -1,0 +1,74 @@
+{
+  "config": {
+    "seed": 42,
+    "output_dir": "experiments/phase4/reports",
+    "device": "cuda",
+    "model_name": "meta-llama/Meta-Llama-3-70B-Instruct",
+    "max_new_tokens": 192,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "runs": 120,
+    "buckets": [
+      "creative",
+      "factual",
+      "reasoning"
+    ],
+    "interventions": [
+      "baseline",
+      "embed_noise",
+      "delay_think",
+      "force_chain",
+      "force_chain_strict",
+      "self_anchor",
+      "self_reflective_guard"
+    ],
+    "verifier_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "metrics": {
+      "transfer_entropy": {
+        "history_window": 8,
+        "estimator": "ksg"
+      },
+      "cross_entropy": {
+        "baseline_model": "microsoft/Phi-2",
+        "device": "cpu"
+      },
+      "verifier": {
+        "device": "cpu"
+      },
+      "semantic_primitives": {
+        "nsm_list_path": "experiments/phase3/vendors/nsm_primitives.txt",
+        "weight": 1.0
+      },
+      "geometry": {
+        "collect_token_embeddings": true,
+        "umap": {
+          "n_neighbors": 20,
+          "min_dist": 0.15,
+          "n_components": 2,
+          "metric": "euclidean",
+          "random_state": 42
+        },
+        "tda": {
+          "compute_persistent_homology": true,
+          "max_dim": 1
+        }
+      }
+    }
+  },
+  "capabilities": {
+    "umap_used": true,
+    "ripser_used": true,
+    "hf_nll_used": true,
+    "hf_verifier_used": true,
+    "model_name": "meta-llama/Meta-Llama-3-70B-Instruct",
+    "verifier_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "device_requested": "cuda",
+    "hf_device": "cuda",
+    "dtype": "torch.bfloat16",
+    "temperature": 0.6,
+    "quantization": "4bit",
+    "device_map": "none",
+    "gpu_mem_budget": "78GiB"
+  },
+  "timestamp": "2025-11-01T18:49:55.087681"
+}
