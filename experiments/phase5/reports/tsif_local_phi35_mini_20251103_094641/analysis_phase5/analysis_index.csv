@@ -1,0 +1,4 @@
+run_id,prompt_id,label,model_name,bucket,prompt_half_life@95pct,num_h1_loops@0.02,mean_speed,max_speed,total_path_len,mean_curvature,max_curvature
+tsif_local_phi35_mini,fact,tsif_local_phi35_mini_fact,microsoft/phi-3.5-mini-instruct,factual,10,0,0.6753437519073486,23.01183319091797,85.7686538696289,1.6367281675338745,3.1411044597625732
+tsif_local_phi35_mini,plan,tsif_local_phi35_mini_plan,microsoft/phi-3.5-mini-instruct,creative,1,0,0.6630962491035461,25.727142333984375,84.21322631835938,1.7628090381622314,3.1302144527435303
+tsif_local_phi35_mini,riddle,tsif_local_phi35_mini_riddle,microsoft/phi-3.5-mini-instruct,reasoning,55,0,0.6670365333557129,22.972084045410156,84.71363830566406,1.5412453413009644,3.118983030319214

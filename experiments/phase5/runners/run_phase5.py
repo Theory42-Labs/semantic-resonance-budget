@@ -72,8 +72,10 @@ def cosine(a: np.ndarray, b: np.ndarray) -> float:
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--fast-smoke", action="store_true", help="Force greedy decoding for quick smoke runs (no sampling)")
     ap.add_argument("--config", required=True)
     args = ap.parse_args()
+    fast_smoke = args.fast_smoke
 
     cfg = load_cfg(args.config)
     set_seed(cfg.seed)
@@ -122,14 +124,24 @@ def main():
     if device == "mps" and dtype == torch.float32:
         torch.set_default_dtype(torch.float32)
 
+    try:
+        if device == "mps":
+            torch.set_float32_matmul_precision("medium")
+    except Exception:
+        pass
+
     # Model + tokenizer
     tok = AutoTokenizer.from_pretrained(cfg.model_name)
+    tok.padding_side = "left"
+    if tok.pad_token is None:
+        tok.pad_token = tok.eos_token
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
     model = AutoModelForCausalLM.from_pretrained(
         cfg.model_name,
         torch_dtype=dtype,
-        device_map=None,
+        device_map=None,                 # manual move below
+        attn_implementation="sdpa",      # faster attention path in PyTorch
     )
     model.to(device)
     model.eval()
@@ -158,21 +170,28 @@ def main():
                 temperature=cfg.temperature if do_sample else None,
                 top_p=cfg.top_p if do_sample else None,
                 max_new_tokens=cfg.max_new_tokens,
+                use_cache=True,
                 return_dict_in_generate=True,
                 output_scores=True,
                 pad_token_id=tok.eos_token_id,
             )
 
         with torch.inference_mode():
-            try:
-                gen = _run(do_sample=(cfg.temperature > 0.0))
-            except RuntimeError as e:
-                msg = str(e).lower()
-                if "probability tensor contains either" in msg or "nan" in msg or "inf" in msg:
-                    # Retry deterministically without sampling
-                    gen = _run(do_sample=False)
-                else:
-                    raise
+            autocast_ctx = contextlib.nullcontext()
+            if device == "mps" and dtype == torch.float16:
+                autocast_ctx = torch.autocast(device_type="mps", dtype=torch.float16)
+            with autocast_ctx:
+                try:
+                    # if fast_smoke flag active, disable sampling
+                    do_sample = (cfg.temperature > 0.0) and (not fast_smoke)
+                    gen = _run(do_sample=do_sample)
+                except RuntimeError as e:
+                    msg = str(e).lower()
+                    if "probability tensor contains either" in msg or "nan" in msg or "inf" in msg:
+                        # Retry deterministically without sampling
+                        gen = _run(do_sample=False)  # always greedy on retry
+                    else:
+                        raise
 
         seq = gen.sequences[0]  # (prompt + gen)
         new_ids = seq[len(inputs["input_ids"][0]):]  # only the new part

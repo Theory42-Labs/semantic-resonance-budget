@@ -4,7 +4,7 @@ dtype: float16         # use float32 if your model/tokenizer dislikes fp16 on mp
 output_dir: experiments/phase5/reports
 
 model:
-  name: mistralai/Mistral-7B-Instruct-v0.3
+  name: microsoft/Phi-4-mini-instruct
   max_new_tokens: 128
   temperature: 0.6
   top_p: 0.90
@@ -13,7 +13,7 @@ verifier:
   embedder: sentence-transformers/all-MiniLM-L6-v2  # for coherence/trajectory
 
 experiment:
-  run_id: tsif_local_llama3b
+  run_id: tsif_local_phi4_mini
   prompts:
     - id: riddle
       bucket: reasoning
