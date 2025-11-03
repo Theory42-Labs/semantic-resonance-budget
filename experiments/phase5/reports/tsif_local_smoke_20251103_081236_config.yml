@@ -1,0 +1,16 @@
+seed: 42
+device: mps
+dtype: float16
+output_dir: experiments/phase5/reports
+model:
+  name: microsoft/Phi-2
+  max_new_tokens: 64
+  temperature: 0.7
+  top_p: 0.95
+verifier:
+  embedder: sentence-transformers/all-MiniLM-L6-v2
+experiment:
+  run_id: tsif_local_smoke
+  num_prompts: 3
+  jsonl_name: phase5_records.jsonl
+  timestamp: '20251103_081236'

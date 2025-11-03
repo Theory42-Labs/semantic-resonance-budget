@@ -1,0 +1,33 @@
+seed: 42
+device: mps            # "mps" on Mac, "cpu" also works
+dtype: float16         # use float32 if your model/tokenizer dislikes fp16 on mps
+output_dir: experiments/phase5/reports
+
+model:
+  name: mistralai/Mistral-7B-Instruct-v0.3
+  max_new_tokens: 128
+  temperature: 0.6
+  top_p: 0.90
+
+verifier:
+  embedder: sentence-transformers/all-MiniLM-L6-v2  # for coherence/trajectory
+
+experiment:
+  run_id: tsif_local_llama3b
+  prompts:
+    - id: riddle
+      bucket: reasoning
+      text: >
+        You are given three switches and a closed door. Each switch controls one of three light bulbs on the other side.
+        You can flip the switches however you want but may only open the door once. How can you determine which switch controls which bulb?
+    - id: fact
+      bucket: factual
+      text: >
+        Explain the difference between transfer entropy and mutual information in a short paragraph.
+    - id: plan
+      bucket: creative
+      text: >
+        Draft a simple three-step morning ritual for clarity and focus, suitable for a researcher starting their day.
+
+logging:
+  jsonl_name: phase5_records.jsonl

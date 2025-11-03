@@ -1,0 +1,4 @@
+run_id,prompt_id,label
+tsif_local_smoke,fact,tsif_local_smoke_fact
+tsif_local_smoke,plan,tsif_local_smoke_plan
+tsif_local_smoke,riddle,tsif_local_smoke_riddle

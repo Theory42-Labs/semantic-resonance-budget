@@ -1,0 +1,16 @@
+seed: 42
+device: mps
+dtype: float16
+output_dir: experiments/phase5/reports
+model:
+  name: meta-llama/Llama-3.2-3B-Instruct
+  max_new_tokens: 96
+  temperature: 0.6
+  top_p: 0.9
+verifier:
+  embedder: sentence-transformers/all-MiniLM-L6-v2
+experiment:
+  run_id: tsif_local_llama3b
+  num_prompts: 3
+  jsonl_name: phase5_records.jsonl
+  timestamp: '20251103_082536'
