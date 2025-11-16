@@ -1,0 +1,55 @@
+
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semantic-resonance-budget"
+version = "0.1.0"
+description = "A model-agnostic library for Semantic Resonance Budget (SRB) metrics and analysis."
+authors = [
+    { name = "Joey Stafford", email = "joestafford045@gmail.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=3.9"
+keywords = ["SRB", "semantic resonance", "entropy", "LLM metrics", "reasoning"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "License :: Other/Proprietary License",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# The SRB core has no mandatory external dependencies.
+# Adapters may require extras.
+[project.optional-dependencies]
+openai = ["openai>=1.0.0"]
+tests = [
+    "pytest>=7.0",
+]
+
+[project.urls]
+homepage = "https://github.com/LivingMythos/semantic-resonance-budget"
+repository = "https://github.com/LivingMythos/semantic-resonance-budget"
+
+[tool.setuptools.package-dir]
+srb = "srb"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["srb*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
